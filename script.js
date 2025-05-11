@@ -1,6 +1,6 @@
 /*jslint browser: true, vars: true, indent: 3 */
 
-var startUniverse = function () {
+(function () {
    'use strict';
 
    var universeCanvas = document.getElementById('universe');
@@ -10,30 +10,30 @@ var startUniverse = function () {
       window.alert('Your browser does not seem to support the <canvas> element correctly.\nPlease use a recent version of a standards-compliant browser such as Opera, Chrome or Firefox.');
       return;
    }
+   universeCanvas.width = window.innerHeight > 945 ? 840 : 420;
+   universeCanvas.height = window.innerHeight > 945 ? 840 : 420;
 
    var numCellsWide, cellWidth, numCellsTall, cellHeight;
-   var cellValues = [];
-   var cellValueColors;
-   var numCellValues;
+   var cellValues, cellValueColors, numCellValues;
    var cyclicRadio = document.getElementById('cyclic-mode');
+   var directionalRadio = document.getElementById('directional-mode');
    var driftRadio = document.getElementById('drift-mode');
-   var gameRadio = document.getElementById('game-mode');
    var moduloRadio = document.getElementById('modulo-mode');
+   var parallelRadio = document.getElementById('parallel-mode');
    var totalisticRadio = document.getElementById('totalistic-mode');
    var vineyardRadio = document.getElementById('vineyard-mode');
    var wolframRuleRadio = document.getElementById('wolfram-rule-mode');
-   var gameNeighborhoodArea = document.getElementById('game-neighborhood-area');
    var neighborhoodArea = document.getElementById('neighborhood-area');
    var totalisticRulesArea = document.getElementById('totalistic-rules-area');
    var wolframRuleRulesArea = document.getElementById('wolfram-rule-rules-area');
-   var copyLeftDownCheckbox = document.getElementById('copy-left-down');
-   var copyLeftCheckbox = document.getElementById('copy-left');
-   var copyLeftUpCheckbox = document.getElementById('copy-left-up');
-   var copyUpCheckbox = document.getElementById('copy-up');
-   var copyRightUpCheckbox = document.getElementById('copy-right-up');
-   var copyRightCheckbox = document.getElementById('copy-right');
-   var copyRightDownCheckbox = document.getElementById('copy-right-down');
-   var copyDownCheckbox = document.getElementById('copy-down');
+   var neighborLeftDownCheckbox = document.getElementById('neighbor-left-down');
+   var neighborLeftCheckbox = document.getElementById('neighbor-left');
+   var neighborLeftUpCheckbox = document.getElementById('neighbor-left-up');
+   var neighborUpCheckbox = document.getElementById('neighbor-up');
+   var neighborRightUpCheckbox = document.getElementById('neighbor-right-up');
+   var neighborRightCheckbox = document.getElementById('neighbor-right');
+   var neighborRightDownCheckbox = document.getElementById('neighbor-right-down');
+   var neighborDownCheckbox = document.getElementById('neighbor-down');
    var surviveCheckbox = [document.getElementById('survive-0'), document.getElementById('survive-1'), document.getElementById('survive-2'),
                           document.getElementById('survive-3'), document.getElementById('survive-4'), document.getElementById('survive-5'),
                           document.getElementById('survive-6'), document.getElementById('survive-7'), document.getElementById('survive-8')];
@@ -42,6 +42,7 @@ var startUniverse = function () {
                        document.getElementById('born-6'), document.getElementById('born-7'), document.getElementById('born-8')];
    var onCheckbox = [document.getElementById('on-0'), document.getElementById('on-1'), document.getElementById('on-2'), document.getElementById('on-3'),
                      document.getElementById('on-4'), document.getElementById('on-5'), document.getElementById('on-6'), document.getElementById('on-7')];
+   var advanceTimeStep = null;
 
    var resizeUniverse = function (newNumCellsWide, newNumCellsTall) {
       var cellX, cellY;
@@ -51,6 +52,7 @@ var startUniverse = function () {
       cellHeight = universeCanvas.height / numCellsTall;
 
       // initialize cell values
+      cellValues = [];
       for (cellX = 0; cellX < numCellsWide; cellX += 1) {
          cellValues[cellX] = [];
          for (cellY = 0; cellY < numCellsTall; cellY += 1) {
@@ -58,10 +60,7 @@ var startUniverse = function () {
          }
       }
    };
-
-   Array.prototype.peek = function (fromTop) {
-      return fromTop ? this[this.length - fromTop - 1] : this[this.length - 1];
-   };
+   resizeUniverse(105, 105);
 
    var randomizeUniverse = function () {
       var cellX, cellY;
@@ -88,8 +87,9 @@ var startUniverse = function () {
       }
    };
 
-   var advanceGenerationCyclic = function () {
+   var advanceTimeStepCyclic = function () {
       var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, nextCellValue, shouldAdvance;
+      var allowFallback = false;
       var newCellValues = [];
 
       // calculate new cell values
@@ -102,27 +102,51 @@ var startUniverse = function () {
             cellYDown = (cellY + 1) % numCellsTall;
             nextCellValue = (cellValues[cellX][cellY] + 1) % numCellValues;
             shouldAdvance = false;
-            if (copyLeftDownCheckbox.checked && cellValues[cellXLeft][cellYDown] === nextCellValue) {
+            if (neighborLeftDownCheckbox.checked && cellValues[cellXLeft][cellYDown] === nextCellValue) {
                shouldAdvance = true;
-            } else if (copyLeftCheckbox.checked && cellValues[cellXLeft][cellY] === nextCellValue) {
+            } else if (neighborLeftCheckbox.checked && cellValues[cellXLeft][cellY] === nextCellValue) {
                shouldAdvance = true;
-            } else if (copyLeftUpCheckbox.checked && cellValues[cellXLeft][cellYUp] === nextCellValue) {
+            } else if (neighborLeftUpCheckbox.checked && cellValues[cellXLeft][cellYUp] === nextCellValue) {
                shouldAdvance = true;
-            } else if (copyUpCheckbox.checked && cellValues[cellX][cellYUp] === nextCellValue) {
+            } else if (neighborUpCheckbox.checked && cellValues[cellX][cellYUp] === nextCellValue) {
                shouldAdvance = true;
-            } else if (copyRightUpCheckbox.checked && cellValues[cellXRight][cellYUp] === nextCellValue) {
+            } else if (neighborRightUpCheckbox.checked && cellValues[cellXRight][cellYUp] === nextCellValue) {
                shouldAdvance = true;
-            } else if (copyRightCheckbox.checked && cellValues[cellXRight][cellY] === nextCellValue) {
+            } else if (neighborRightCheckbox.checked && cellValues[cellXRight][cellY] === nextCellValue) {
                shouldAdvance = true;
-            } else if (copyRightDownCheckbox.checked && cellValues[cellXRight][cellYDown] === nextCellValue) {
+            } else if (neighborRightDownCheckbox.checked && cellValues[cellXRight][cellYDown] === nextCellValue) {
                shouldAdvance = true;
-            } else if (copyDownCheckbox.checked && cellValues[cellX][cellYDown] === nextCellValue) {
+            } else if (neighborDownCheckbox.checked && cellValues[cellX][cellYDown] === nextCellValue) {
                shouldAdvance = true;
             }
             if (shouldAdvance) {
                newCellValues[cellX][cellY] = nextCellValue;
             } else {
-               newCellValues[cellX][cellY] = cellValues[cellX][cellY];
+               if (allowFallback) {
+                  shouldAdvance = true;
+                  if (neighborLeftDownCheckbox.checked && cellValues[cellXLeft][cellYDown] !== cellValues[cellX][cellY]) {
+                     shouldAdvance = false;
+                  } else if (neighborLeftCheckbox.checked && cellValues[cellXLeft][cellY] !== cellValues[cellX][cellY]) {
+                     shouldAdvance = false;
+                  } else if (neighborLeftUpCheckbox.checked && cellValues[cellXLeft][cellYUp] !== cellValues[cellX][cellY]) {
+                     shouldAdvance = false;
+                  } else if (neighborUpCheckbox.checked && cellValues[cellX][cellYUp] !== cellValues[cellX][cellY]) {
+                     shouldAdvance = false;
+                  } else if (neighborRightUpCheckbox.checked && cellValues[cellXRight][cellYUp] !== cellValues[cellX][cellY]) {
+                     shouldAdvance = false;
+                  } else if (neighborRightCheckbox.checked && cellValues[cellXRight][cellY] !== cellValues[cellX][cellY]) {
+                     shouldAdvance = false;
+                  } else if (neighborRightDownCheckbox.checked && cellValues[cellXRight][cellYDown] !== cellValues[cellX][cellY]) {
+                     shouldAdvance = false;
+                  } else if (neighborDownCheckbox.checked && cellValues[cellX][cellYDown] !== cellValues[cellX][cellY]) {
+                     shouldAdvance = false;
+                  }
+               }
+               if (shouldAdvance) {
+                  newCellValues[cellX][cellY] = (cellValues[cellX][cellY] + numCellValues - 1) % numCellValues;
+               } else {
+                  newCellValues[cellX][cellY] = cellValues[cellX][cellY];
+               }
             }
          }
       }
@@ -131,8 +155,8 @@ var startUniverse = function () {
       cellValues = newCellValues;
    };
 
-   var advanceGenerationCyclistic = function () {
-      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, nextCellValue, total;
+   var advanceTimeStepDirectional = function () {
+      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp;
       var newCellValues = [];
 
       // calculate new cell values
@@ -143,10 +167,18 @@ var startUniverse = function () {
             cellXRight = (cellX + 1) % numCellsWide;
             cellYUp = (cellY + numCellsTall - 1) % numCellsTall;
             cellYDown = (cellY + 1) % numCellsTall;
-            nextCellValue = (cellValues[cellX][cellY] + 1) % numCellValues;
-            total = (cellValues[cellXLeft][cellYUp] + cellValues[cellXLeft][cellY] + cellValues[cellX][cellYUp] + cellValues[cellX][cellY] + cellValues[cellX][cellYDown] + cellValues[cellXRight][cellY] + cellValues[cellXRight][cellYDown]) % numCellValues;
-            if (total === numCellValues - 1) {
-               newCellValues[cellX][cellY] = nextCellValue;
+            if (cellValues[cellX][cellY] === 0) {
+               newCellValues[cellX][cellY] = cellValues[cellX][cellYDown];
+            } else if (cellValues[cellX][cellY] === 1) {
+               newCellValues[cellX][cellY] = cellValues[cellXLeft][cellYDown];
+            } else if (cellValues[cellX][cellY] === 2) {
+               newCellValues[cellX][cellY] = cellValues[cellXLeft][cellY];
+            } else if (cellValues[cellX][cellY] === 3) {
+               newCellValues[cellX][cellY] = cellValues[cellX][cellYUp];
+            } else if (cellValues[cellX][cellY] === 4) {
+               newCellValues[cellX][cellY] = cellValues[cellXRight][cellYUp];
+            } else if (cellValues[cellX][cellY] === 5) {
+               newCellValues[cellX][cellY] = cellValues[cellXRight][cellY];
             } else {
                newCellValues[cellX][cellY] = cellValues[cellX][cellY];
             }
@@ -157,7 +189,7 @@ var startUniverse = function () {
       cellValues = newCellValues;
    };
 
-   var advanceGenerationDrift = function () {
+   var advanceTimeStepDrift = function () {
       var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp;
       var newCellValues = [];
 
@@ -177,176 +209,7 @@ var startUniverse = function () {
       cellValues = newCellValues;
    };
 
-   var ipdRandom = function (historyFocal, historyOpponent) {
-      return Math.random() < 0.5 ? 0 : 1;
-   };
-
-   var ipdAlwaysCooperate = function (historyFocal, historyOpponent) {
-      return 0;
-   };
-
-   var ipdAlwaysDefect = function (historyFocal, historyOpponent) {
-      return 1;
-   };
-
-   var ipdNiceTitForTat = function (historyFocal, historyOpponent) {
-      if (historyOpponent.length > 0) {
-         return historyOpponent.peek();
-      } else {
-         return 0;
-      }
-   };
-
-   var ipdNastyTitForTat = function (historyFocal, historyOpponent) {
-      if (historyOpponent.length > 0) {
-         return historyOpponent.peek();
-      } else {
-         return 1;
-      }
-   };
-
-   var ipdNicePavlov = function (historyFocal, historyOpponent) {
-      if (historyFocal.length > 0 && historyOpponent.length > 0) {
-         return historyFocal.peek() === historyOpponent.peek() ? 0 : 1;
-      } else {
-         return 0;
-      }
-   };
-
-   var ipdNastyPavlov = function (historyFocal, historyOpponent) {
-      if (historyFocal.length > 0 && historyOpponent.length > 0) {
-         return historyFocal.peek() === historyOpponent.peek() ? 0 : 1;
-      } else {
-         return 1;
-      }
-   };
-
-   var ipdNiceDelayedPavlov = function (historyFocal, historyOpponent) {
-      if (historyFocal.length > 1 && historyOpponent.length > 0) {
-         return historyFocal.peek(1) === historyOpponent.peek() ? 0 : 1;
-      } else if (historyOpponent.length > 0) {
-         return historyOpponent.peek();
-      } else {
-         return 0;
-      }
-   };
-
-   var ipdNastyDelayedPavlov = function (historyFocal, historyOpponent) {
-      if (historyFocal.length > 1 && historyOpponent.length > 0) {
-         return historyFocal.peek(1) === historyOpponent.peek() ? 0 : 1;
-      } else if (historyOpponent.length > 0) {
-         return 1 - historyOpponent.peek();
-      } else {
-         return 1;
-      }
-   };
-
-   var ipdFuncs = [];
-   ipdFuncs.push(ipdRandom);
-   ipdFuncs.push(ipdAlwaysCooperate);
-   ipdFuncs.push(ipdAlwaysDefect);
-   ipdFuncs.push(ipdNiceTitForTat);
-   ipdFuncs.push(ipdNastyTitForTat);
-   ipdFuncs.push(ipdNicePavlov);
-   ipdFuncs.push(ipdNastyPavlov);
-   ipdFuncs.push(ipdNiceDelayedPavlov);
-   ipdFuncs.push(ipdNastyDelayedPavlov);
-
-   var ipdPayoffs = function (strat1, strat2) {
-      var cooperatePayoff = 5;
-      var defectPayoff = 4;
-      return strat1 === 0 ? strat2 === 0 ? [cooperatePayoff, cooperatePayoff] : [0, cooperatePayoff + defectPayoff] : strat2 === 0 ? [cooperatePayoff + defectPayoff, 0] : [defectPayoff, defectPayoff];
-   };
-
-   var playIpd = function (agent0, agent1, numRounds) {
-      var payoffs, whichRound;
-      var history = [[], []];
-      var strat = [];
-      var totals = [0, 0];
-      for (whichRound = 0; whichRound < numRounds; whichRound += 1) {
-         strat[0] = ipdFuncs[agent0](history[0], history[1]);
-         strat[1] = ipdFuncs[agent1](history[1], history[0]);
-         history[0].push(strat[0]);
-         history[1].push(strat[1]);
-         payoffs = ipdPayoffs(strat[0], strat[1]);
-         totals[0] += payoffs[0];
-         totals[1] += payoffs[1];
-      }
-      return totals;
-   };
-
-   var advanceGenerationGame = function () {
-      var bestCellValues, bestScore, cellScore, cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, localCells, points, whichCell;
-      var cellScores = [];
-      var newCellValues = [];
-      var numRounds = 10;
-
-      // initialize scores and mutate some cells
-      for (cellX = 0; cellX < numCellsWide; cellX += 1) {
-         cellScores[cellX] = [];
-         for (cellY = 0; cellY < numCellsTall; cellY += 1) {
-            cellScores[cellX][cellY] = 0;
-            if (Math.random() < 1 / (numCellsTall + numCellsWide)) {
-               cellValues[cellX][cellY] = Math.floor(Math.random() * numCellValues);
-            }
-         }
-      }
-
-      // play IPD in pairs
-      for (cellX = 0; cellX < numCellsWide; cellX += 1) {
-         for (cellY = 0; cellY < numCellsTall; cellY += 1) {
-            cellXRight = (cellX + 1) % numCellsWide;
-            cellYDown = (cellY + 1) % numCellsTall;
-            points = playIpd(cellValues[cellX][cellY], cellValues[cellX][cellYDown], numRounds);
-            cellScores[cellX][cellY] += points[0];
-            cellScores[cellX][cellYDown] += points[1];
-            points = playIpd(cellValues[cellX][cellY], cellValues[cellXRight][cellY], numRounds);
-            cellScores[cellX][cellY] += points[0];
-            cellScores[cellXRight][cellY] += points[1];
-            points = playIpd(cellValues[cellX][cellY], cellValues[cellXRight][cellYDown], numRounds);
-            cellScores[cellX][cellY] += points[0];
-            cellScores[cellXRight][cellYDown] += points[1];
-         }
-      }
-
-      // calculate new cell values
-      for (cellX = 0; cellX < numCellsWide; cellX += 1) {
-         newCellValues[cellX] = [];
-         for (cellY = 0; cellY < numCellsTall; cellY += 1) {
-            cellXLeft = (cellX + numCellsWide - 1) % numCellsWide;
-            cellXRight = (cellX + 1) % numCellsWide;
-            cellYUp = (cellY + numCellsTall - 1) % numCellsTall;
-            cellYDown = (cellY + 1) % numCellsTall;
-            localCells = [
-               [cellXLeft, cellYUp],
-               [cellXLeft, cellY],
-               [cellX, cellYUp],
-               [cellX, cellY],
-               [cellX, cellYDown],
-               [cellXRight, cellY],
-               [cellXRight, cellYDown]
-            ];
-            bestScore = Number.NEGATIVE_INFINITY;
-            for (whichCell = 0; whichCell < localCells.length; whichCell += 1) {
-               cellScore = cellScores[localCells[whichCell][0]][localCells[whichCell][1]];
-               if (cellScore > bestScore) {
-                  bestCellValues = [cellValues[localCells[whichCell][0]][localCells[whichCell][1]]];
-                  bestCellValues = [];
-                  bestCellValues.push(cellValues[localCells[whichCell][0]][localCells[whichCell][1]]);
-                  bestScore = cellScore;
-               } else if (cellScore === bestScore) {
-                  bestCellValues.push(cellValues[localCells[whichCell][0]][localCells[whichCell][1]]);
-               }
-            }
-            newCellValues[cellX][cellY] = bestCellValues[Math.floor(Math.random() * bestCellValues.length)];
-         }
-      }
-
-      // make new cell values current cell values
-      cellValues = newCellValues;
-   };
-
-   var advanceGenerationModulo = function () {
+   var advanceTimeStepModulo = function () {
       var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp;
       var newCellValues = [];
 
@@ -366,7 +229,37 @@ var startUniverse = function () {
       cellValues = newCellValues;
    };
 
-   var advanceGenerationTotalistic = function () {
+   var advanceTimeStepParallel = function () {
+      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp;
+      var newCellValues = [];
+
+      // calculate new cell values
+      for (cellX = 0; cellX < numCellsWide; cellX += 1) {
+         newCellValues[cellX] = [];
+         for (cellY = 0; cellY < numCellsTall; cellY += 1) {
+            cellXLeft = (cellX + numCellsWide - 1) % numCellsWide;
+            cellXRight = (cellX + 1) % numCellsWide;
+            cellYUp = (cellY + numCellsTall - 1) % numCellsTall;
+            cellYDown = (cellY + 1) % numCellsTall;
+
+            newCellValues[cellX][cellY] = 0;
+            if ((4 & cellValues[cellXLeft][cellY]) + (4 & cellValues[cellX][cellY]) + (4 & cellValues[cellX][cellYUp]) + (4 & cellValues[cellXRight][cellYUp]) + (4 & cellValues[cellXRight][cellY]) > 8) {
+               newCellValues[cellX][cellY] |= 4;
+            }
+            if ((2 & cellValues[cellX][cellYDown]) + (2 & cellValues[cellX][cellY]) + (2 & cellValues[cellXRight][cellY]) + (2 & cellValues[cellXRight][cellYUp]) + (2 & cellValues[cellXLeft][cellYDown]) > 4) {
+               newCellValues[cellX][cellY] |= 2;
+            }
+            if ((1 & cellValues[cellX][cellY]) + (1 & cellValues[cellXLeft][cellYDown]) + (1 & cellValues[cellX][cellYDown]) + (1 & cellValues[cellX][cellYUp]) + (1 & cellValues[cellXLeft][cellY]) > 2) {
+               newCellValues[cellX][cellY] |= 1;
+            }
+         }
+      }
+
+      // make new cell values current cell values
+      cellValues = newCellValues;
+   };
+
+   var advanceTimeStepTotalistic = function () {
       var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, total;
       var newCellValues = [];
 
@@ -387,7 +280,7 @@ var startUniverse = function () {
       cellValues = newCellValues;
    };
 
-   var advanceGenerationVineyard = function () {
+   var advanceTimeStepVineyard = function () {
       var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp;
       var newCellValues = [];
       var numHigher, numLower;
@@ -402,56 +295,56 @@ var startUniverse = function () {
             cellYDown = (cellY + 1) % numCellsTall;
             numHigher = 0;
             numLower = 0;
-            if (copyLeftDownCheckbox.checked) {
+            if (neighborLeftDownCheckbox.checked) {
                if (cellValues[cellXLeft][cellYDown] > cellValues[cellX][cellY]) {
                   numHigher += 1;
                } else if (cellValues[cellXLeft][cellYDown] < cellValues[cellX][cellY]) {
                   numLower += 1;
                }
             }
-            if (copyLeftCheckbox.checked) {
+            if (neighborLeftCheckbox.checked) {
                if (cellValues[cellXLeft][cellY] > cellValues[cellX][cellY]) {
                   numHigher += 1;
                } else if (cellValues[cellXLeft][cellY] < cellValues[cellX][cellY]) {
                   numLower += 1;
                }
             }
-            if (copyLeftUpCheckbox.checked) {
+            if (neighborLeftUpCheckbox.checked) {
                if (cellValues[cellXLeft][cellYUp] > cellValues[cellX][cellY]) {
                   numHigher += 1;
                } else if (cellValues[cellXLeft][cellYUp] < cellValues[cellX][cellY]) {
                   numLower += 1;
                }
             }
-            if (copyUpCheckbox.checked) {
+            if (neighborUpCheckbox.checked) {
                if (cellValues[cellX][cellYUp] > cellValues[cellX][cellY]) {
                   numHigher += 1;
                } else if (cellValues[cellX][cellYUp] < cellValues[cellX][cellY]) {
                   numLower += 1;
                }
             }
-            if (copyRightUpCheckbox.checked) {
+            if (neighborRightUpCheckbox.checked) {
                if (cellValues[cellXRight][cellYUp] > cellValues[cellX][cellY]) {
                   numHigher += 1;
                } else if (cellValues[cellXRight][cellYUp] < cellValues[cellX][cellY]) {
                   numLower += 1;
                }
             }
-            if (copyRightCheckbox.checked) {
+            if (neighborRightCheckbox.checked) {
                if (cellValues[cellXRight][cellY] > cellValues[cellX][cellY]) {
                   numHigher += 1;
                } else if (cellValues[cellXRight][cellY] < cellValues[cellX][cellY]) {
                   numLower += 1;
                }
             }
-            if (copyRightDownCheckbox.checked) {
+            if (neighborRightDownCheckbox.checked) {
                if (cellValues[cellXRight][cellYDown] > cellValues[cellX][cellY]) {
                   numHigher += 1;
                } else if (cellValues[cellXRight][cellYDown] < cellValues[cellX][cellY]) {
                   numLower += 1;
                }
             }
-            if (copyDownCheckbox.checked) {
+            if (neighborDownCheckbox.checked) {
                if (cellValues[cellX][cellYDown] > cellValues[cellX][cellY]) {
                   numHigher += 1;
                } else if (cellValues[cellX][cellYDown] < cellValues[cellX][cellY]) {
@@ -472,7 +365,7 @@ var startUniverse = function () {
       cellValues = newCellValues;
    };
 
-   var advanceGenerationWolframRule = function () {
+   var advanceTimeStepWolframRule = function () {
       var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp;
 
       // calculate new cell values, directly replacing the old ones
@@ -491,12 +384,9 @@ var startUniverse = function () {
       }
    };
 
-   var advanceGeneration = null;
-
    cyclicRadio.onclick = function () {
-      if (advanceGeneration !== advanceGenerationCyclic) {
-         advanceGeneration = advanceGenerationCyclic;
-         gameNeighborhoodArea.style.display = 'none';
+      if (advanceTimeStep !== advanceTimeStepCyclic) {
+         advanceTimeStep = advanceTimeStepCyclic;
          neighborhoodArea.style.display = '';
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = 'none';
@@ -512,10 +402,26 @@ var startUniverse = function () {
       cyclicRadio.onclick();
    }
 
+   directionalRadio.onclick = function () {
+      if (advanceTimeStep !== advanceTimeStepDirectional) {
+         advanceTimeStep = advanceTimeStepDirectional;
+         neighborhoodArea.style.display = 'none';
+         totalisticRulesArea.style.display = 'none';
+         wolframRuleRulesArea.style.display = 'none';
+         resizeUniverse(168, 168);
+         cellValueColors = ['#0000ff', '#00aaaa', '#00ff00', '#aaaa00', '#ff0000', '#aa00aa'];
+         numCellValues = cellValueColors.length;
+         randomizeUniverse();
+         redrawUniverse();
+      }
+   };
+   if (directionalRadio.checked) {
+      directionalRadio.onclick();
+   }
+
    driftRadio.onclick = function () {
-      if (advanceGeneration !== advanceGenerationDrift) {
-         advanceGeneration = advanceGenerationDrift;
-         gameNeighborhoodArea.style.display = 'none';
+      if (advanceTimeStep !== advanceTimeStepDrift) {
+         advanceTimeStep = advanceTimeStepDrift;
          neighborhoodArea.style.display = 'none';
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = 'none';
@@ -530,29 +436,10 @@ var startUniverse = function () {
       driftRadio.onclick();
    }
 
-   gameRadio.onclick = function () {
-      if (advanceGeneration !== advanceGenerationGame) {
-         advanceGeneration = advanceGenerationGame;
-         gameNeighborhoodArea.style.display = 'none';
-         neighborhoodArea.style.display = 'none';
-         totalisticRulesArea.style.display = 'none';
-         wolframRuleRulesArea.style.display = 'none';
-         resizeUniverse(105, 105);
-         cellValueColors = ['#999999', '#00ff00', '#000000', '#00ffff', '#0000ff', '#ffff00', '#ff0000', '#ffffff', '#ff00ff'];
-         numCellValues = cellValueColors.length;
-         randomizeUniverse();
-         redrawUniverse();
-      }
-   };
-   if (gameRadio.checked) {
-      gameRadio.onclick();
-   }
-
    moduloRadio.onclick = function () {
       var cellX, cellY;
-      if (advanceGeneration !== advanceGenerationModulo) {
-         advanceGeneration = advanceGenerationModulo;
-         gameNeighborhoodArea.style.display = 'none';
+      if (advanceTimeStep !== advanceTimeStepModulo) {
+         advanceTimeStep = advanceTimeStepModulo;
          neighborhoodArea.style.display = 'none';
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = 'none';
@@ -571,10 +458,26 @@ var startUniverse = function () {
       moduloRadio.onclick();
    }
 
+   parallelRadio.onclick = function () {
+      if (advanceTimeStep !== advanceTimeStepParallel) {
+         advanceTimeStep = advanceTimeStepParallel;
+         neighborhoodArea.style.display = 'none';
+         totalisticRulesArea.style.display = 'none';
+         wolframRuleRulesArea.style.display = 'none';
+         resizeUniverse(210, 210);
+         cellValueColors = ['#000000', '#0000ff', '#00ff00', '#00ffff', '#ff0000', '#ff00ff', '#ffff00', '#ffffff'];
+         numCellValues = cellValueColors.length;
+         randomizeUniverse();
+         redrawUniverse();
+      }
+   };
+   if (parallelRadio.checked) {
+      parallelRadio.onclick();
+   }
+
    totalisticRadio.onclick = function () {
-      if (advanceGeneration !== advanceGenerationTotalistic) {
-         advanceGeneration = advanceGenerationTotalistic;
-         gameNeighborhoodArea.style.display = 'none';
+      if (advanceTimeStep !== advanceTimeStepTotalistic) {
+         advanceTimeStep = advanceTimeStepTotalistic;
          neighborhoodArea.style.display = 'none';
          totalisticRulesArea.style.display = '';
          wolframRuleRulesArea.style.display = 'none';
@@ -591,9 +494,8 @@ var startUniverse = function () {
 
    vineyardRadio.onclick = function () {
       var i;
-      if (advanceGeneration !== advanceGenerationVineyard) {
-         advanceGeneration = advanceGenerationVineyard;
-         gameNeighborhoodArea.style.display = 'none';
+      if (advanceTimeStep !== advanceTimeStepVineyard) {
+         advanceTimeStep = advanceTimeStepVineyard;
          neighborhoodArea.style.display = '';
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = 'none';
@@ -602,6 +504,11 @@ var startUniverse = function () {
          cellValueColors = [];
          for (i = 0; i < numCellValues; i += 1) {
             cellValueColors.push('rgb(' + i + ', ' + i + ', ' + i + ')');
+         }
+         numCellValues = 128;
+         cellValueColors = [];
+         for (i = 0; i < numCellValues; i += 1) {
+            cellValueColors.push('rgb(' + (127 - i) + ', ' + i + ', ' + (2 * i) + ')');
          }
          randomizeUniverse();
          redrawUniverse();
@@ -613,9 +520,8 @@ var startUniverse = function () {
 
    wolframRuleRadio.onclick = function () {
       var cellX, cellY;
-      if (advanceGeneration !== advanceGenerationWolframRule) {
-         advanceGeneration = advanceGenerationWolframRule;
-         gameNeighborhoodArea.style.display = 'none';
+      if (advanceTimeStep !== advanceTimeStepWolframRule) {
+         advanceTimeStep = advanceTimeStepWolframRule;
          neighborhoodArea.style.display = 'none';
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = '';
@@ -636,47 +542,47 @@ var startUniverse = function () {
    }
 
    document.getElementById('moore-neighborhood').onclick = function () {
-      copyLeftDownCheckbox.checked = true;
-      copyLeftCheckbox.checked = true;
-      copyLeftUpCheckbox.checked = true;
-      copyUpCheckbox.checked = true;
-      copyRightUpCheckbox.checked = true;
-      copyRightCheckbox.checked = true;
-      copyRightDownCheckbox.checked = true;
-      copyDownCheckbox.checked = true;
+      neighborLeftDownCheckbox.checked = true;
+      neighborLeftCheckbox.checked = true;
+      neighborLeftUpCheckbox.checked = true;
+      neighborUpCheckbox.checked = true;
+      neighborRightUpCheckbox.checked = true;
+      neighborRightCheckbox.checked = true;
+      neighborRightDownCheckbox.checked = true;
+      neighborDownCheckbox.checked = true;
    };
 
    document.getElementById('hex-neighborhood').onclick = function () {
-      copyLeftDownCheckbox.checked = true;
-      copyLeftCheckbox.checked = true;
-      copyLeftUpCheckbox.checked = false;
-      copyUpCheckbox.checked = true;
-      copyRightUpCheckbox.checked = true;
-      copyRightCheckbox.checked = true;
-      copyRightDownCheckbox.checked = false;
-      copyDownCheckbox.checked = true;
+      neighborLeftDownCheckbox.checked = true;
+      neighborLeftCheckbox.checked = true;
+      neighborLeftUpCheckbox.checked = false;
+      neighborUpCheckbox.checked = true;
+      neighborRightUpCheckbox.checked = true;
+      neighborRightCheckbox.checked = true;
+      neighborRightDownCheckbox.checked = false;
+      neighborDownCheckbox.checked = true;
    };
 
    document.getElementById('vonneumann-neighborhood').onclick = function () {
-      copyLeftDownCheckbox.checked = false;
-      copyLeftCheckbox.checked = true;
-      copyLeftUpCheckbox.checked = false;
-      copyUpCheckbox.checked = true;
-      copyRightUpCheckbox.checked = false;
-      copyRightCheckbox.checked = true;
-      copyRightDownCheckbox.checked = false;
-      copyDownCheckbox.checked = true;
+      neighborLeftDownCheckbox.checked = false;
+      neighborLeftCheckbox.checked = true;
+      neighborLeftUpCheckbox.checked = false;
+      neighborUpCheckbox.checked = true;
+      neighborRightUpCheckbox.checked = false;
+      neighborRightCheckbox.checked = true;
+      neighborRightDownCheckbox.checked = false;
+      neighborDownCheckbox.checked = true;
    };
 
    document.getElementById('obliquevonneumann-neighborhood').onclick = function () {
-      copyLeftDownCheckbox.checked = true;
-      copyLeftCheckbox.checked = false;
-      copyLeftUpCheckbox.checked = true;
-      copyUpCheckbox.checked = false;
-      copyRightUpCheckbox.checked = true;
-      copyRightCheckbox.checked = false;
-      copyRightDownCheckbox.checked = true;
-      copyDownCheckbox.checked = false;
+      neighborLeftDownCheckbox.checked = true;
+      neighborLeftCheckbox.checked = false;
+      neighborLeftUpCheckbox.checked = true;
+      neighborUpCheckbox.checked = false;
+      neighborRightUpCheckbox.checked = true;
+      neighborRightCheckbox.checked = false;
+      neighborRightDownCheckbox.checked = true;
+      neighborDownCheckbox.checked = false;
    };
 
    document.getElementById('gameoflife-rules').onclick = function () {
@@ -704,19 +610,23 @@ var startUniverse = function () {
    };
 
    document.getElementById('advance').onclick = function () {
-      advanceGeneration();
+      advanceTimeStep();
       redrawUniverse();
    };
 
+   document.getElementById('snapshot').onclick = function () {
+      window.open(universeCanvas.toDataURL(), 'Universe snapshot');
+   };
+
    universeCanvas.onmousedown = function () {
-      advanceGeneration();
+      advanceTimeStep();
       redrawUniverse();
       document.onmousemove = function () {
-         advanceGeneration();
+         advanceTimeStep();
          redrawUniverse();
       };
       document.onmouseup = function () {
          document.onmousemove = null;
       };
    };
-};
+}());

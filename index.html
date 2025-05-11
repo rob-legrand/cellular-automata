@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en-US" xml:lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
+<html dir="ltr" lang="en-US">
 <head><title>Cellular automaton</title>
 
 <link href="style.css" rel="stylesheet" type="text/css" />
@@ -8,10 +8,11 @@
 
 </head><body>
 
+<div class="bigtop">Cellular automata</div>
 <p id="instructions">
-   Click the universe to advance to the next generation.&nbsp; Click and drag around to advance quickly.
+   Click the universe to advance to the next time step.&nbsp; Click and drag around to advance quickly.
 </p>
-<canvas height="840" id="universe" width="840">
+<canvas id="universe">
    Your browser does not seem to support the <code>&lt;canvas&gt;</code> element correctly.&nbsp; Please use a recent version of a standards-compliant browser such as
    <a href="http://www.opera.com/">Opera</a>, <a href="http://www.google.com/chrome/">Chrome</a> or <a href="http://www.getfirefox.com/">Firefox</a> and enable
    JavaScript.
@@ -20,9 +21,10 @@
    <legend>Modes</legend>
    <div>
       <label><input checked="checked" id="cyclic-mode" name="mode-options" type="radio" />&nbsp;Cyclic</label>
+      <label><input id="directional-mode" name="mode-options" type="radio" />&nbsp;Directional</label>
       <label><input id="drift-mode" name="mode-options" type="radio" />&nbsp;Drift</label>
-      <label><input id="game-mode" name="mode-options" type="radio" />&nbsp;Game</label>
       <label><input id="modulo-mode" name="mode-options" type="radio" />&nbsp;Modulo</label>
+      <label><input id="parallel-mode" name="mode-options" type="radio" />&nbsp;Parallel</label>
       <label><input id="totalistic-mode" name="mode-options" type="radio" />&nbsp;Totalistic</label>
       <label><input id="vineyard-mode" name="mode-options" type="radio" />&nbsp;Vineyard</label>
       <label><input id="wolfram-rule-mode" name="mode-options" type="radio" />&nbsp;Wolfram rule</label>
@@ -32,23 +34,23 @@
    <legend>Custom neighborhood</legend>
    <div>
       <table><tr><td>
-         <input id="copy-left-up" type="checkbox" />
+         <input id="neighbor-left-up" type="checkbox" />
       </td><td>
-         <input checked="checked" id="copy-up" type="checkbox" />
+         <input checked="checked" id="neighbor-up" type="checkbox" />
       </td><td>
-         <input id="copy-right-up" type="checkbox" />
+         <input id="neighbor-right-up" type="checkbox" />
       </td></tr><tr><td>
-         <input checked="checked" id="copy-left" type="checkbox" />
+         <input checked="checked" id="neighbor-left" type="checkbox" />
       </td><td>
          &nbsp;
       </td><td>
-         <input checked="checked" id="copy-right" type="checkbox" />
+         <input checked="checked" id="neighbor-right" type="checkbox" />
       </td></tr><tr><td>
-         <input id="copy-left-down" type="checkbox" />
+         <input id="neighbor-left-down" type="checkbox" />
       </td><td>
-         <input checked="checked" id="copy-down" type="checkbox" />
+         <input checked="checked" id="neighbor-down" type="checkbox" />
       </td><td>
-         <input id="copy-right-down" type="checkbox" />
+         <input id="neighbor-right-down" type="checkbox" />
       </td></tr></table>
    </div>
    <div>
@@ -60,40 +62,6 @@
    </div>
    <div>
       <input id="obliquevonneumann-neighborhood" type="button" value="oblique von Neumann" />
-   </div>
-</fieldset>
-<fieldset id="game-neighborhood-area">
-   <legend>Custom neighborhood</legend>
-   <div>
-      <table><tr><td>
-         <input id="game-copy-left-up" type="checkbox" />
-      </td><td>
-         <input checked="checked" id="game-copy-up" type="checkbox" />
-      </td><td>
-         <input id="game-copy-right-up" type="checkbox" />
-      </td></tr><tr><td>
-         <input checked="checked" id="game-copy-left" type="checkbox" />
-      </td><td>
-         &nbsp;
-      </td><td>
-         <input checked="checked" id="game-copy-right" type="checkbox" />
-      </td></tr><tr><td>
-         <input id="game-copy-left-down" type="checkbox" />
-      </td><td>
-         <input checked="checked" id="game-copy-down" type="checkbox" />
-      </td><td>
-         <input id="game-copy-right-down" type="checkbox" />
-      </td></tr></table>
-   </div>
-   <div>
-      <input id="game-moore-neighborhood" type="button" value="Moore" />
-      <input id="game-hex-neighborhood" type="button" value="hex" />
-   </div>
-   <div>
-      <input id="game-vonneumann-neighborhood" type="button" value="von Neumann" />
-   </div>
-   <div>
-      <input id="game-obliquevonneumann-neighborhood" type="button" value="oblique von Neumann" />
    </div>
 </fieldset>
 <fieldset id="totalistic-rules-area">
@@ -247,18 +215,14 @@
 <fieldset id="controls-area">
    <legend>Controls</legend>
    <div>
-      <input id="randomize" type="button" value="Randomize universe" />
-   </div>
-   <div>
-      <input id="advance" type="button" value="Advance to next generation" />
+      <button id="randomize" type="button">Randomize universe</button>
+   </div><div>
+      <button id="advance" type="button">Advance to next time step</button>
+   </div><div>
+      <button id="snapshot" type="button">Show snapshot of population</button>
    </div>
 </fieldset>
 
 <script src="script.js" type="text/javascript"></script>
-<script type="text/javascript">
-// <![CDATA[
-startUniverse();
-// ]]>
-</script>
 
 </body></html>
