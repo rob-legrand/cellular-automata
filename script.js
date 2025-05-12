@@ -1,10 +1,11 @@
-/*jslint browser: true, vars: true, indent: 3 */
+/*jslint bitwise: true, browser: true, indent: 3 */
 
 (function () {
    'use strict';
+   var advanceTimeStep, advanceTimeStepCyclic, advanceTimeStepDirectional, advanceTimeStepDrift, advanceTimeStepModulo, advanceTimeStepParallel, advanceTimeStepTotalistic, advanceTimeStepVineyard, advanceTimeStepWolframRule, bornCheckbox, cellHeight, cellValueColors, cellValues, cellWidth, cyclicRadio, directionalRadio, driftRadio, moduloRadio, neighborDownCheckbox, neighborLeftCheckbox, neighborLeftDownCheckbox, neighborLeftUpCheckbox, neighborRightCheckbox, neighborRightDownCheckbox, neighborRightUpCheckbox, neighborUpCheckbox, neighborhoodArea, numCellValues, numCellsTall, numCellsWide, onCheckbox, parallelRadio, randomizeUniverse, redrawUniverse, resizeUniverse, surviveCheckbox, totalisticRadio, totalisticRulesArea, universeCanvas, universeContext, vineyardRadio, wolframRuleRadio, wolframRuleRulesArea;
 
-   var universeCanvas = document.getElementById('universe');
-   var universeContext = universeCanvas && universeCanvas.getContext && universeCanvas.getContext('2d');
+   universeCanvas = document.getElementById('universe');
+   universeContext = universeCanvas && universeCanvas.getContext && universeCanvas.getContext('2d');
    if (!universeContext) {
       document.getElementById('instructions').innerHTML = 'Your browser does not seem to support the <code>&lt;canvas&gt;</code> element correctly.&nbsp; Please use a recent version of a standards-compliant browser such as <a href="http://www.opera.com/">Opera</a>, <a href="http://www.google.com/chrome/">Chrome</a> or <a href="http://www.getfirefox.com/">Firefox</a>.';
       window.alert('Your browser does not seem to support the <canvas> element correctly.\nPlease use a recent version of a standards-compliant browser such as Opera, Chrome or Firefox.');
@@ -13,38 +14,36 @@
    universeCanvas.width = window.innerHeight > 945 ? 840 : 420;
    universeCanvas.height = window.innerHeight > 945 ? 840 : 420;
 
-   var numCellsWide, cellWidth, numCellsTall, cellHeight;
-   var cellValues, cellValueColors, numCellValues;
-   var cyclicRadio = document.getElementById('cyclic-mode');
-   var directionalRadio = document.getElementById('directional-mode');
-   var driftRadio = document.getElementById('drift-mode');
-   var moduloRadio = document.getElementById('modulo-mode');
-   var parallelRadio = document.getElementById('parallel-mode');
-   var totalisticRadio = document.getElementById('totalistic-mode');
-   var vineyardRadio = document.getElementById('vineyard-mode');
-   var wolframRuleRadio = document.getElementById('wolfram-rule-mode');
-   var neighborhoodArea = document.getElementById('neighborhood-area');
-   var totalisticRulesArea = document.getElementById('totalistic-rules-area');
-   var wolframRuleRulesArea = document.getElementById('wolfram-rule-rules-area');
-   var neighborLeftDownCheckbox = document.getElementById('neighbor-left-down');
-   var neighborLeftCheckbox = document.getElementById('neighbor-left');
-   var neighborLeftUpCheckbox = document.getElementById('neighbor-left-up');
-   var neighborUpCheckbox = document.getElementById('neighbor-up');
-   var neighborRightUpCheckbox = document.getElementById('neighbor-right-up');
-   var neighborRightCheckbox = document.getElementById('neighbor-right');
-   var neighborRightDownCheckbox = document.getElementById('neighbor-right-down');
-   var neighborDownCheckbox = document.getElementById('neighbor-down');
-   var surviveCheckbox = [document.getElementById('survive-0'), document.getElementById('survive-1'), document.getElementById('survive-2'),
-                          document.getElementById('survive-3'), document.getElementById('survive-4'), document.getElementById('survive-5'),
-                          document.getElementById('survive-6'), document.getElementById('survive-7'), document.getElementById('survive-8')];
-   var bornCheckbox = [document.getElementById('born-0'), document.getElementById('born-1'), document.getElementById('born-2'),
-                       document.getElementById('born-3'), document.getElementById('born-4'), document.getElementById('born-5'),
-                       document.getElementById('born-6'), document.getElementById('born-7'), document.getElementById('born-8')];
-   var onCheckbox = [document.getElementById('on-0'), document.getElementById('on-1'), document.getElementById('on-2'), document.getElementById('on-3'),
-                     document.getElementById('on-4'), document.getElementById('on-5'), document.getElementById('on-6'), document.getElementById('on-7')];
-   var advanceTimeStep = null;
+   cyclicRadio = document.getElementById('cyclic-mode');
+   directionalRadio = document.getElementById('directional-mode');
+   driftRadio = document.getElementById('drift-mode');
+   moduloRadio = document.getElementById('modulo-mode');
+   parallelRadio = document.getElementById('parallel-mode');
+   totalisticRadio = document.getElementById('totalistic-mode');
+   vineyardRadio = document.getElementById('vineyard-mode');
+   wolframRuleRadio = document.getElementById('wolfram-rule-mode');
+   neighborhoodArea = document.getElementById('neighborhood-area');
+   totalisticRulesArea = document.getElementById('totalistic-rules-area');
+   wolframRuleRulesArea = document.getElementById('wolfram-rule-rules-area');
+   neighborLeftDownCheckbox = document.getElementById('neighbor-left-down');
+   neighborLeftCheckbox = document.getElementById('neighbor-left');
+   neighborLeftUpCheckbox = document.getElementById('neighbor-left-up');
+   neighborUpCheckbox = document.getElementById('neighbor-up');
+   neighborRightUpCheckbox = document.getElementById('neighbor-right-up');
+   neighborRightCheckbox = document.getElementById('neighbor-right');
+   neighborRightDownCheckbox = document.getElementById('neighbor-right-down');
+   neighborDownCheckbox = document.getElementById('neighbor-down');
+   surviveCheckbox = [document.getElementById('survive-0'), document.getElementById('survive-1'), document.getElementById('survive-2'),
+                      document.getElementById('survive-3'), document.getElementById('survive-4'), document.getElementById('survive-5'),
+                      document.getElementById('survive-6'), document.getElementById('survive-7'), document.getElementById('survive-8')];
+   bornCheckbox = [document.getElementById('born-0'), document.getElementById('born-1'), document.getElementById('born-2'),
+                   document.getElementById('born-3'), document.getElementById('born-4'), document.getElementById('born-5'),
+                   document.getElementById('born-6'), document.getElementById('born-7'), document.getElementById('born-8')];
+   onCheckbox = [document.getElementById('on-0'), document.getElementById('on-1'), document.getElementById('on-2'), document.getElementById('on-3'),
+                 document.getElementById('on-4'), document.getElementById('on-5'), document.getElementById('on-6'), document.getElementById('on-7')];
+   advanceTimeStep = null;
 
-   var resizeUniverse = function (newNumCellsWide, newNumCellsTall) {
+   resizeUniverse = function (newNumCellsWide, newNumCellsTall) {
       var cellX, cellY;
       numCellsWide = newNumCellsWide;
       cellWidth = universeCanvas.width / numCellsWide;
@@ -62,7 +61,7 @@
    };
    resizeUniverse(105, 105);
 
-   var randomizeUniverse = function () {
+   randomizeUniverse = function () {
       var cellX, cellY;
       for (cellX = 0; cellX < numCellsWide; cellX += 1) {
          for (cellY = 0; cellY < numCellsTall; cellY += 1) {
@@ -71,7 +70,7 @@
       }
    };
 
-   var redrawUniverse = function () {
+   redrawUniverse = function () {
       var cellX, cellY;
 
       // fill canvas background to match page background
@@ -87,10 +86,11 @@
       }
    };
 
-   var advanceTimeStepCyclic = function () {
-      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, nextCellValue, shouldAdvance;
-      var allowFallback = false;
-      var newCellValues = [];
+   advanceTimeStepCyclic = function () {
+      var allowFallback, cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, newCellValues, nextCellValue, shouldAdvance;
+
+      allowFallback = false;
+      newCellValues = [];
 
       // calculate new cell values
       for (cellX = 0; cellX < numCellsWide; cellX += 1) {
@@ -155,9 +155,10 @@
       cellValues = newCellValues;
    };
 
-   var advanceTimeStepDirectional = function () {
-      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp;
-      var newCellValues = [];
+   advanceTimeStepDirectional = function () {
+      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, newCellValues;
+
+      newCellValues = [];
 
       // calculate new cell values
       for (cellX = 0; cellX < numCellsWide; cellX += 1) {
@@ -189,9 +190,10 @@
       cellValues = newCellValues;
    };
 
-   var advanceTimeStepDrift = function () {
-      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp;
-      var newCellValues = [];
+   advanceTimeStepDrift = function () {
+      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, newCellValues;
+
+      newCellValues = [];
 
       // calculate new cell values
       for (cellX = 0; cellX < numCellsWide; cellX += 1) {
@@ -209,9 +211,10 @@
       cellValues = newCellValues;
    };
 
-   var advanceTimeStepModulo = function () {
-      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp;
-      var newCellValues = [];
+   advanceTimeStepModulo = function () {
+      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, newCellValues;
+
+      newCellValues = [];
 
       // calculate new cell values
       for (cellX = 0; cellX < numCellsWide; cellX += 1) {
@@ -229,9 +232,10 @@
       cellValues = newCellValues;
    };
 
-   var advanceTimeStepParallel = function () {
-      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp;
-      var newCellValues = [];
+   advanceTimeStepParallel = function () {
+      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, newCellValues;
+
+      newCellValues = [];
 
       // calculate new cell values
       for (cellX = 0; cellX < numCellsWide; cellX += 1) {
@@ -259,9 +263,10 @@
       cellValues = newCellValues;
    };
 
-   var advanceTimeStepTotalistic = function () {
-      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, total;
-      var newCellValues = [];
+   advanceTimeStepTotalistic = function () {
+      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, newCellValues, total;
+
+      newCellValues = [];
 
       // calculate new cell values
       for (cellX = 0; cellX < numCellsWide; cellX += 1) {
@@ -280,10 +285,10 @@
       cellValues = newCellValues;
    };
 
-   var advanceTimeStepVineyard = function () {
-      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp;
-      var newCellValues = [];
-      var numHigher, numLower;
+   advanceTimeStepVineyard = function () {
+      var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp, newCellValues, numHigher, numLower;
+
+      newCellValues = [];
 
       // calculate new cell values
       for (cellX = 0; cellX < numCellsWide; cellX += 1) {
@@ -365,7 +370,7 @@
       cellValues = newCellValues;
    };
 
-   var advanceTimeStepWolframRule = function () {
+   advanceTimeStepWolframRule = function () {
       var cellX, cellXLeft, cellXRight, cellY, cellYDown, cellYUp;
 
       // calculate new cell values, directly replacing the old ones
