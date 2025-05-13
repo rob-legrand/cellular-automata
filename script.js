@@ -414,7 +414,7 @@
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = 'none';
          resizeUniverse(168, 168);
-         cellValueColors = ['#0000ff', '#00aaaa', '#00ff00', '#aaaa00', '#ff0000', '#aa00aa'];
+         cellValueColors = ['#0077ee', '#00ee77', '#77ee00', '#ee7700', '#ee0077', '#7700ee'];
          numCellValues = cellValueColors.length;
          randomizeUniverse();
          redrawUniverse();
@@ -617,10 +617,6 @@
    document.getElementById('advance').onclick = function () {
       advanceTimeStep();
       redrawUniverse();
-   };
-
-   document.getElementById('snapshot').onclick = function () {
-      window.open(universeCanvas.toDataURL(), 'Universe snapshot');
    };
 
    universeCanvas.onmousedown = function () {
