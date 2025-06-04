@@ -32,10 +32,6 @@ canvas#universe, body > fieldset {
    float: left;
 }
 
-input {
-   text-align: right;
-}
-
 label {
    display: block;
 }
@@ -45,51 +41,6 @@ label {
    font-family: Futura, "Century Gothic", Geneva, Tahoma, Verdana, Arial, sans-serif;
    font-size: 250%;
    font-weight: bold;
-}
-
-.credits {
-   border-top: 1px #000000 solid;
-   clear: both;
-   font-style: italic;
-   padding-top: 3px;
-}
-
-.debug-at-bottom {
-   clear: both;
-}
-
-.dimension-value {
-   text-align: right;
-}
-
-.email {
-   font-family: monospace;
-}
-
-.endtag {
-   font-size: 60%;
-   font-style: italic;
-   margin-left: 2em;
-}
-
-.header {
-   font-family: "Computer Modern", Didot, Palatino, "Palatino Linotype", serif;
-   font-size: 150%;
-}
-
-.smalltop {
-   color: #660033;
-   font-family: Garamond, Georgia, Baskerville, Palatino, "Palatino Linotype", Didot, Bodoni, serif;
-   font-size: 100%;
-   font-weight: normal;
-}
-
-.url {
-   font-family: monospace;
-}
-
-.variable {
-   font-style: italic;
 }
 
 ::selection {
