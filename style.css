@@ -12,11 +12,11 @@ a {
 }
 
 a:link {
-   color: #806040;
+   color: rgb(120, 90, 60);
 }
 
 a:visited {
-   color: #406080;
+   color: rgb(60, 90, 120);
 }
 
 a:hover {
@@ -26,12 +26,12 @@ a:hover {
 }
 
 a:active {
-   color: #606060;
+   color: rgb(90, 90, 90);
 }
 
 body {
-   background-color: #ddeeff;
-   color: #001122;
+   background-color: rgb(225, 240, 255);
+   color: rgb(0, 15, 30);
    font-family: var(--serif);
 }
 
@@ -44,12 +44,12 @@ label {
 }
 
 .bigtop {
-   color: #660033;
+   color: rgb(90, 0, 45);
    font-family: var(--railway);
    font-size: 250%;
    font-weight: bold;
 }
 
 ::selection {
-   background-color: #ffffff;
+   background-color: rgb(255, 255, 255);
 }
