@@ -1,5 +1,12 @@
 @charset "UTF-8";
 
+@import url(/fonts/fonts.css);
+
+:root {
+   --railway: Railway, Futura, "Century Gothic", Geneva, Tahoma, Verdana, sans-serif;
+   --serif: Didot, Palatino, "Palatino Linotype", Gentium, serif;
+}
+
 a {
    text-decoration: none;
 }
@@ -25,7 +32,7 @@ a:active {
 body {
    background-color: #ddeeff;
    color: #001122;
-   font-family: Didot, Palatino, "Palatino Linotype", serif;
+   font-family: var(--serif);
 }
 
 canvas#universe, body > fieldset {
@@ -38,7 +45,7 @@ label {
 
 .bigtop {
    color: #660033;
-   font-family: Futura, "Century Gothic", Geneva, Tahoma, Verdana, Arial, sans-serif;
+   font-family: var(--railway);
    font-size: 250%;
    font-weight: bold;
 }
