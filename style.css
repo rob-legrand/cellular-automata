@@ -39,15 +39,14 @@ canvas#universe, body > fieldset {
    float: left;
 }
 
-label {
-   display: block;
-}
-
-.bigtop {
+h1 {
    color: rgb(90, 0, 45);
    font-family: var(--railway);
    font-size: 250%;
-   font-weight: bold;
+}
+
+label {
+   display: block;
 }
 
 ::selection {
