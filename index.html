@@ -13,210 +13,218 @@
 <p id="instructions">
    Click the universe to advance to the next time step.&nbsp; Click and drag around to advance quickly.
 </p>
+
+<div class="app-area">
+
 <canvas id="universe"></canvas>
-<fieldset id="modes-area">
-   <legend>Modes</legend>
-   <div>
-      <label><input checked="checked" id="cyclic-mode" name="mode-options" type="radio" />&nbsp;Cyclic</label>
-      <label><input id="directional-mode" name="mode-options" type="radio" />&nbsp;Directional</label>
-      <label><input id="drift-mode" name="mode-options" type="radio" />&nbsp;Drift</label>
-      <label><input id="modulo-mode" name="mode-options" type="radio" />&nbsp;Modulo</label>
-      <label><input id="parallel-mode" name="mode-options" type="radio" />&nbsp;Parallel</label>
-      <label><input id="totalistic-mode" name="mode-options" type="radio" />&nbsp;Totalistic</label>
-      <label><input id="vineyard-mode" name="mode-options" type="radio" />&nbsp;Vineyard</label>
-      <label><input id="wolfram-rule-mode" name="mode-options" type="radio" />&nbsp;Wolfram rule</label>
-   </div>
-</fieldset>
-<fieldset id="neighborhood-area">
-   <legend>Custom neighborhood</legend>
-   <div>
-      <table><tr><td>
-         <input id="neighbor-left-up" type="checkbox" />
-      </td><td>
-         <input checked="checked" id="neighbor-up" type="checkbox" />
-      </td><td>
-         <input id="neighbor-right-up" type="checkbox" />
-      </td></tr><tr><td>
-         <input checked="checked" id="neighbor-left" type="checkbox" />
-      </td><td>
-         &nbsp;
-      </td><td>
-         <input checked="checked" id="neighbor-right" type="checkbox" />
-      </td></tr><tr><td>
-         <input id="neighbor-left-down" type="checkbox" />
-      </td><td>
-         <input checked="checked" id="neighbor-down" type="checkbox" />
-      </td><td>
-         <input id="neighbor-right-down" type="checkbox" />
-      </td></tr></table>
-   </div>
-   <div>
-      <button id="moore-neighborhood" type="button">Moore</button>
-      <button id="hex-neighborhood" type="button">hex</button>
-   </div>
-   <div>
-      <button id="vonneumann-neighborhood" type="button">von Neumann</button>
-   </div>
-   <div>
-      <button id="obliquevonneumann-neighborhood" type="button">oblique von Neumann</button>
-   </div>
-</fieldset>
-<fieldset id="totalistic-rules-area">
-   <legend>Custom rules</legend>
-   <div>
-      <table><tr><th>
-         neighbors
-      </th><th>
-         survive?
-      </th><th>
-         born?
-      </th></tr><tr><td>
-         0
-      </td><td>
-         <input id="survive-0" type="checkbox" />
-      </td><td>
-         <input id="born-0" type="checkbox" />
-      </td></tr><tr><td>
-         1
-      </td><td>
-         <input id="survive-1" type="checkbox" />
-      </td><td>
-         <input id="born-1" type="checkbox" />
-      </td></tr><tr><td>
-         2
-      </td><td>
-         <input checked="checked" id="survive-2" type="checkbox" />
-      </td><td>
-         <input id="born-2" type="checkbox" />
-      </td></tr><tr><td>
-         3
-      </td><td>
-         <input checked="checked" id="survive-3" type="checkbox" />
-      </td><td>
-         <input checked="checked" id="born-3" type="checkbox" />
-      </td></tr><tr><td>
-         4
-      </td><td>
-         <input id="survive-4" type="checkbox" />
-      </td><td>
-         <input id="born-4" type="checkbox" />
-      </td></tr><tr><td>
-         5
-      </td><td>
-         <input id="survive-5" type="checkbox" />
-      </td><td>
-         <input id="born-5" type="checkbox" />
-      </td></tr><tr><td>
-         6
-      </td><td>
-         <input id="survive-6" type="checkbox" />
-      </td><td>
-         <input id="born-6" type="checkbox" />
-      </td></tr><tr><td>
-         7
-      </td><td>
-         <input id="survive-7" type="checkbox" />
-      </td><td>
-         <input id="born-7" type="checkbox" />
-      </td></tr><tr><td>
-         8
-      </td><td>
-         <input id="survive-8" type="checkbox" />
-      </td><td>
-         <input id="born-8" type="checkbox" />
-      </td></tr></table>
-   </div>
-   <div>
-      <button id="gameoflife-rules" type="button">Game of Life</button>
-      <button id="majorityvote-rules" type="button">Majority vote</button>
-   </div>
-</fieldset>
-<fieldset id="wolfram-rule-rules-area">
-   <legend>Custom rules</legend>
-   <div>
-      <table><tr><th>
-         left
-      </th><th>
-         self
-      </th><th>
-         right
-      </th><th>
-         on?
-      </th></tr><tr><td>
-         off
-      </td><td>
-         off
-      </td><td>
-         off
-      </td><td>
-         <input id="on-0" type="checkbox" />
-      </td></tr><tr><td>
-         off
-      </td><td>
-         off
-      </td><td>
-         on
-      </td><td>
-         <input checked="checked" id="on-1" type="checkbox" />
-      </td></tr><tr><td>
-         off
-      </td><td>
-         on
-      </td><td>
-         off
-      </td><td>
-         <input checked="checked" id="on-2" type="checkbox" />
-      </td></tr><tr><td>
-         off
-      </td><td>
-         on
-      </td><td>
-         on
-      </td><td>
-         <input checked="checked" id="on-3" type="checkbox" />
-      </td></tr><tr><td>
-         on
-      </td><td>
-         off
-      </td><td>
-         off
-      </td><td>
-         <input id="on-4" type="checkbox" />
-      </td></tr><tr><td>
-         on
-      </td><td>
-         off
-      </td><td>
-         on
-      </td><td>
-         <input checked="checked" id="on-5" type="checkbox" />
-      </td></tr><tr><td>
-         on
-      </td><td>
-         on
-      </td><td>
-         off
-      </td><td>
-         <input checked="checked" id="on-6" type="checkbox" />
-      </td></tr><tr><td>
-         on
-      </td><td>
-         on
-      </td><td>
-         on
-      </td><td>
-         <input id="on-7" type="checkbox" />
-      </td></tr></table>
-   </div>
-</fieldset>
-<fieldset id="controls-area">
-   <legend>Controls</legend>
-   <div>
-      <button id="randomize" type="button">Randomize universe</button>
-   </div><div>
-      <button id="advance" type="button">Advance to next time step</button>
-   </div>
-</fieldset>
+
+<div class="options-area">
+   <fieldset id="modes-area">
+      <legend>Modes</legend>
+      <div>
+         <label><input checked="checked" id="cyclic-mode" name="mode-options" type="radio" />&nbsp;Cyclic</label>
+         <label><input id="directional-mode" name="mode-options" type="radio" />&nbsp;Directional</label>
+         <label><input id="drift-mode" name="mode-options" type="radio" />&nbsp;Drift</label>
+         <label><input id="modulo-mode" name="mode-options" type="radio" />&nbsp;Modulo</label>
+         <label><input id="parallel-mode" name="mode-options" type="radio" />&nbsp;Parallel</label>
+         <label><input id="totalistic-mode" name="mode-options" type="radio" />&nbsp;Totalistic</label>
+         <label><input id="vineyard-mode" name="mode-options" type="radio" />&nbsp;Vineyard</label>
+         <label><input id="wolfram-rule-mode" name="mode-options" type="radio" />&nbsp;Wolfram rule</label>
+      </div>
+   </fieldset>
+   <fieldset id="neighborhood-area">
+      <legend>Custom neighborhood</legend>
+      <div>
+         <table><tr><td>
+            <input id="neighbor-left-up" type="checkbox" />
+         </td><td>
+            <input checked="checked" id="neighbor-up" type="checkbox" />
+         </td><td>
+            <input id="neighbor-right-up" type="checkbox" />
+         </td></tr><tr><td>
+            <input checked="checked" id="neighbor-left" type="checkbox" />
+         </td><td>
+            &nbsp;
+         </td><td>
+            <input checked="checked" id="neighbor-right" type="checkbox" />
+         </td></tr><tr><td>
+            <input id="neighbor-left-down" type="checkbox" />
+         </td><td>
+            <input checked="checked" id="neighbor-down" type="checkbox" />
+         </td><td>
+            <input id="neighbor-right-down" type="checkbox" />
+         </td></tr></table>
+      </div>
+      <div>
+         <button id="moore-neighborhood" type="button">Moore</button>
+         <button id="hex-neighborhood" type="button">hex</button>
+      </div>
+      <div>
+         <button id="vonneumann-neighborhood" type="button">von Neumann</button>
+      </div>
+      <div>
+         <button id="obliquevonneumann-neighborhood" type="button">oblique von Neumann</button>
+      </div>
+   </fieldset>
+   <fieldset id="totalistic-rules-area">
+      <legend>Custom rules</legend>
+      <div>
+         <table><tr><th>
+            neighbors
+         </th><th>
+            survive?
+         </th><th>
+            born?
+         </th></tr><tr><td>
+            0
+         </td><td>
+            <input id="survive-0" type="checkbox" />
+         </td><td>
+            <input id="born-0" type="checkbox" />
+         </td></tr><tr><td>
+            1
+         </td><td>
+            <input id="survive-1" type="checkbox" />
+         </td><td>
+            <input id="born-1" type="checkbox" />
+         </td></tr><tr><td>
+            2
+         </td><td>
+            <input checked="checked" id="survive-2" type="checkbox" />
+         </td><td>
+            <input id="born-2" type="checkbox" />
+         </td></tr><tr><td>
+            3
+         </td><td>
+            <input checked="checked" id="survive-3" type="checkbox" />
+         </td><td>
+            <input checked="checked" id="born-3" type="checkbox" />
+         </td></tr><tr><td>
+            4
+         </td><td>
+            <input id="survive-4" type="checkbox" />
+         </td><td>
+            <input id="born-4" type="checkbox" />
+         </td></tr><tr><td>
+            5
+         </td><td>
+            <input id="survive-5" type="checkbox" />
+         </td><td>
+            <input id="born-5" type="checkbox" />
+         </td></tr><tr><td>
+            6
+         </td><td>
+            <input id="survive-6" type="checkbox" />
+         </td><td>
+            <input id="born-6" type="checkbox" />
+         </td></tr><tr><td>
+            7
+         </td><td>
+            <input id="survive-7" type="checkbox" />
+         </td><td>
+            <input id="born-7" type="checkbox" />
+         </td></tr><tr><td>
+            8
+         </td><td>
+            <input id="survive-8" type="checkbox" />
+         </td><td>
+            <input id="born-8" type="checkbox" />
+         </td></tr></table>
+      </div>
+      <div>
+         <button id="gameoflife-rules" type="button">Game of Life</button>
+         <button id="majorityvote-rules" type="button">Majority vote</button>
+      </div>
+   </fieldset>
+   <fieldset id="wolfram-rule-rules-area">
+      <legend>Custom rules</legend>
+      <div>
+         <table><tr><th>
+            left
+         </th><th>
+            self
+         </th><th>
+            right
+         </th><th>
+            on?
+         </th></tr><tr><td>
+            off
+         </td><td>
+            off
+         </td><td>
+            off
+         </td><td>
+            <input id="on-0" type="checkbox" />
+         </td></tr><tr><td>
+            off
+         </td><td>
+            off
+         </td><td>
+            on
+         </td><td>
+            <input checked="checked" id="on-1" type="checkbox" />
+         </td></tr><tr><td>
+            off
+         </td><td>
+            on
+         </td><td>
+            off
+         </td><td>
+            <input checked="checked" id="on-2" type="checkbox" />
+         </td></tr><tr><td>
+            off
+         </td><td>
+            on
+         </td><td>
+            on
+         </td><td>
+            <input checked="checked" id="on-3" type="checkbox" />
+         </td></tr><tr><td>
+            on
+         </td><td>
+            off
+         </td><td>
+            off
+         </td><td>
+            <input id="on-4" type="checkbox" />
+         </td></tr><tr><td>
+            on
+         </td><td>
+            off
+         </td><td>
+            on
+         </td><td>
+            <input checked="checked" id="on-5" type="checkbox" />
+         </td></tr><tr><td>
+            on
+         </td><td>
+            on
+         </td><td>
+            off
+         </td><td>
+            <input checked="checked" id="on-6" type="checkbox" />
+         </td></tr><tr><td>
+            on
+         </td><td>
+            on
+         </td><td>
+            on
+         </td><td>
+            <input id="on-7" type="checkbox" />
+         </td></tr></table>
+      </div>
+   </fieldset>
+   <fieldset id="controls-area">
+      <legend>Controls</legend>
+      <div>
+         <button id="randomize" type="button">Randomize universe</button>
+      </div><div>
+         <button id="advance" type="button">Advance to next time step</button>
+      </div>
+   </fieldset>
+</div>
+
+</div>
 
 <script src="script.js"></script>
 

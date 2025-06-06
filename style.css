@@ -35,10 +35,6 @@ body {
    font-family: var(--serif);
 }
 
-canvas#universe, body > fieldset {
-   float: left;
-}
-
 h1 {
    color: rgb(90, 0, 45);
    font-family: var(--railway);
@@ -47,6 +43,14 @@ h1 {
 
 label {
    display: block;
+}
+
+.app-area, .options-area {
+   align-items: flex-start;
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   justify-content: flex-start;
 }
 
 ::selection {
