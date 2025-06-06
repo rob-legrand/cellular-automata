@@ -5,6 +5,7 @@
 :root {
    --railway: Railway, Futura, "Century Gothic", Geneva, Tahoma, Verdana, sans-serif;
    --serif: Didot, Palatino, "Palatino Linotype", Gentium, serif;
+   color-scheme: dark light;
 }
 
 a {
