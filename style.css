@@ -15,14 +15,14 @@ a {
 a:link {
    color: light-dark(
       rgb(120, 90, 60),
-      rgb(120, 90, 60)
+      rgb(210, 195, 180)
    );
 }
 
 a:visited {
    color: light-dark(
       rgb(60, 90, 120),
-      rgb(60, 90, 120)
+      rgb(180, 195, 210)
    );
 }
 
@@ -35,18 +35,18 @@ a:hover {
 a:active {
    color: light-dark(
       rgb(90, 90, 90),
-      rgb(90, 90, 90)
+      rgb(195, 195, 195)
    );
 }
 
 body {
    background-color: light-dark(
       rgb(225, 240, 255),
-      rgb(225, 240, 255)
+      rgb(0, 15, 30)
    );
    color: light-dark(
       rgb(0, 15, 30),
-      rgb(0, 15, 30)
+      rgb(225, 240, 255)
    );
    font-family: var(--serif);
 }
@@ -54,7 +54,7 @@ body {
 h1 {
    color: light-dark(
       rgb(90, 0, 45),
-      rgb(90, 0, 45)
+      rgb(255, 165, 210)
    );
    font-family: var(--railway);
    font-size: 250%;
@@ -74,7 +74,7 @@ label {
 
 ::selection {
    background-color: light-dark(
-      rgb(255, 255, 255),
-      rgb(255, 255, 255)
+      rgb(255, 225, 195),
+      rgb(60, 30, 0)
    );
 }
