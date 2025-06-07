@@ -4,43 +4,43 @@
    'use strict';
    var advanceTimeStep, advanceTimeStepCyclic, advanceTimeStepDirectional, advanceTimeStepDrift, advanceTimeStepModulo, advanceTimeStepParallel, advanceTimeStepTotalistic, advanceTimeStepVineyard, advanceTimeStepWolframRule, bornCheckbox, cellHeight, cellValueColors, cellValues, cellWidth, cyclicRadio, directionalRadio, driftRadio, moduloRadio, neighborDownCheckbox, neighborLeftCheckbox, neighborLeftDownCheckbox, neighborLeftUpCheckbox, neighborRightCheckbox, neighborRightDownCheckbox, neighborRightUpCheckbox, neighborUpCheckbox, neighborhoodArea, numCellValues, numCellsTall, numCellsWide, onCheckbox, parallelRadio, randomizeUniverse, redrawUniverse, resizeUniverse, surviveCheckbox, totalisticRadio, totalisticRulesArea, universeCanvas, universeContext, vineyardRadio, wolframRuleRadio, wolframRuleRulesArea;
 
-   universeCanvas = document.getElementById('universe');
+   universeCanvas = document.querySelector('#universe');
    universeContext = universeCanvas && universeCanvas.getContext && universeCanvas.getContext('2d');
    if (!universeContext) {
-      document.getElementById('instructions').innerHTML = 'Your browser does not seem to support the <code>&lt;canvas&gt;</code> element correctly.&nbsp; Please use a recent version of a standards-compliant browser such as <a href="http://www.opera.com/">Opera</a>, <a href="http://www.google.com/chrome/">Chrome</a> or <a href="http://www.getfirefox.com/">Firefox</a>.';
+      document.querySelector('#instructions').innerHTML = 'Your browser does not seem to support the <code>&lt;canvas&gt;</code> element correctly.&nbsp; Please use a recent version of a standards-compliant browser such as <a href="http://www.opera.com/">Opera</a>, <a href="http://www.google.com/chrome/">Chrome</a> or <a href="http://www.getfirefox.com/">Firefox</a>.';
       window.alert('Your browser does not seem to support the <canvas> element correctly.\nPlease use a recent version of a standards-compliant browser such as Opera, Chrome or Firefox.');
       return;
    }
    universeCanvas.width = window.innerHeight > 945 ? 840 : 420;
    universeCanvas.height = window.innerHeight > 945 ? 840 : 420;
 
-   cyclicRadio = document.getElementById('cyclic-mode');
-   directionalRadio = document.getElementById('directional-mode');
-   driftRadio = document.getElementById('drift-mode');
-   moduloRadio = document.getElementById('modulo-mode');
-   parallelRadio = document.getElementById('parallel-mode');
-   totalisticRadio = document.getElementById('totalistic-mode');
-   vineyardRadio = document.getElementById('vineyard-mode');
-   wolframRuleRadio = document.getElementById('wolfram-rule-mode');
-   neighborhoodArea = document.getElementById('neighborhood-area');
-   totalisticRulesArea = document.getElementById('totalistic-rules-area');
-   wolframRuleRulesArea = document.getElementById('wolfram-rule-rules-area');
-   neighborLeftDownCheckbox = document.getElementById('neighbor-left-down');
-   neighborLeftCheckbox = document.getElementById('neighbor-left');
-   neighborLeftUpCheckbox = document.getElementById('neighbor-left-up');
-   neighborUpCheckbox = document.getElementById('neighbor-up');
-   neighborRightUpCheckbox = document.getElementById('neighbor-right-up');
-   neighborRightCheckbox = document.getElementById('neighbor-right');
-   neighborRightDownCheckbox = document.getElementById('neighbor-right-down');
-   neighborDownCheckbox = document.getElementById('neighbor-down');
-   surviveCheckbox = [document.getElementById('survive-0'), document.getElementById('survive-1'), document.getElementById('survive-2'),
-                      document.getElementById('survive-3'), document.getElementById('survive-4'), document.getElementById('survive-5'),
-                      document.getElementById('survive-6'), document.getElementById('survive-7'), document.getElementById('survive-8')];
-   bornCheckbox = [document.getElementById('born-0'), document.getElementById('born-1'), document.getElementById('born-2'),
-                   document.getElementById('born-3'), document.getElementById('born-4'), document.getElementById('born-5'),
-                   document.getElementById('born-6'), document.getElementById('born-7'), document.getElementById('born-8')];
-   onCheckbox = [document.getElementById('on-0'), document.getElementById('on-1'), document.getElementById('on-2'), document.getElementById('on-3'),
-                 document.getElementById('on-4'), document.getElementById('on-5'), document.getElementById('on-6'), document.getElementById('on-7')];
+   cyclicRadio = document.querySelector('#cyclic-mode');
+   directionalRadio = document.querySelector('#directional-mode');
+   driftRadio = document.querySelector('#drift-mode');
+   moduloRadio = document.querySelector('#modulo-mode');
+   parallelRadio = document.querySelector('#parallel-mode');
+   totalisticRadio = document.querySelector('#totalistic-mode');
+   vineyardRadio = document.querySelector('#vineyard-mode');
+   wolframRuleRadio = document.querySelector('#wolfram-rule-mode');
+   neighborhoodArea = document.querySelector('#neighborhood-area');
+   totalisticRulesArea = document.querySelector('#totalistic-rules-area');
+   wolframRuleRulesArea = document.querySelector('#wolfram-rule-rules-area');
+   neighborLeftDownCheckbox = document.querySelector('#neighbor-left-down');
+   neighborLeftCheckbox = document.querySelector('#neighbor-left');
+   neighborLeftUpCheckbox = document.querySelector('#neighbor-left-up');
+   neighborUpCheckbox = document.querySelector('#neighbor-up');
+   neighborRightUpCheckbox = document.querySelector('#neighbor-right-up');
+   neighborRightCheckbox = document.querySelector('#neighbor-right');
+   neighborRightDownCheckbox = document.querySelector('#neighbor-right-down');
+   neighborDownCheckbox = document.querySelector('#neighbor-down');
+   surviveCheckbox = [document.querySelector('#survive-0'), document.querySelector('#survive-1'), document.querySelector('#survive-2'),
+                      document.querySelector('#survive-3'), document.querySelector('#survive-4'), document.querySelector('#survive-5'),
+                      document.querySelector('#survive-6'), document.querySelector('#survive-7'), document.querySelector('#survive-8')];
+   bornCheckbox = [document.querySelector('#born-0'), document.querySelector('#born-1'), document.querySelector('#born-2'),
+                   document.querySelector('#born-3'), document.querySelector('#born-4'), document.querySelector('#born-5'),
+                   document.querySelector('#born-6'), document.querySelector('#born-7'), document.querySelector('#born-8')];
+   onCheckbox = [document.querySelector('#on-0'), document.querySelector('#on-1'), document.querySelector('#on-2'), document.querySelector('#on-3'),
+                 document.querySelector('#on-4'), document.querySelector('#on-5'), document.querySelector('#on-6'), document.querySelector('#on-7')];
    advanceTimeStep = null;
 
    resizeUniverse = function (newNumCellsWide, newNumCellsTall) {
@@ -546,7 +546,7 @@
       wolframRuleRadio.onclick();
    }
 
-   document.getElementById('moore-neighborhood').onclick = function () {
+   document.querySelector('#moore-neighborhood').onclick = function () {
       neighborLeftDownCheckbox.checked = true;
       neighborLeftCheckbox.checked = true;
       neighborLeftUpCheckbox.checked = true;
@@ -557,7 +557,7 @@
       neighborDownCheckbox.checked = true;
    };
 
-   document.getElementById('hex-neighborhood').onclick = function () {
+   document.querySelector('#hex-neighborhood').onclick = function () {
       neighborLeftDownCheckbox.checked = true;
       neighborLeftCheckbox.checked = true;
       neighborLeftUpCheckbox.checked = false;
@@ -568,7 +568,7 @@
       neighborDownCheckbox.checked = true;
    };
 
-   document.getElementById('vonneumann-neighborhood').onclick = function () {
+   document.querySelector('#vonneumann-neighborhood').onclick = function () {
       neighborLeftDownCheckbox.checked = false;
       neighborLeftCheckbox.checked = true;
       neighborLeftUpCheckbox.checked = false;
@@ -579,7 +579,7 @@
       neighborDownCheckbox.checked = true;
    };
 
-   document.getElementById('obliquevonneumann-neighborhood').onclick = function () {
+   document.querySelector('#obliquevonneumann-neighborhood').onclick = function () {
       neighborLeftDownCheckbox.checked = true;
       neighborLeftCheckbox.checked = false;
       neighborLeftUpCheckbox.checked = true;
@@ -590,7 +590,7 @@
       neighborDownCheckbox.checked = false;
    };
 
-   document.getElementById('gameoflife-rules').onclick = function () {
+   document.querySelector('#gameoflife-rules').onclick = function () {
       var whichNumNeighbors;
       for (whichNumNeighbors = 0; whichNumNeighbors <= 8; whichNumNeighbors += 1) {
          surviveCheckbox[whichNumNeighbors].checked = false;
@@ -601,7 +601,7 @@
       bornCheckbox[3].checked = true;
    };
 
-   document.getElementById('majorityvote-rules').onclick = function () {
+   document.querySelector('#majorityvote-rules').onclick = function () {
       var whichNumNeighbors;
       for (whichNumNeighbors = 0; whichNumNeighbors <= 8; whichNumNeighbors += 1) {
          surviveCheckbox[whichNumNeighbors].checked = whichNumNeighbors >= 4;
@@ -609,12 +609,12 @@
       }
    };
 
-   document.getElementById('randomize').onclick = function () {
+   document.querySelector('#randomize').onclick = function () {
       randomizeUniverse();
       redrawUniverse();
    };
 
-   document.getElementById('advance').onclick = function () {
+   document.querySelector('#advance').onclick = function () {
       advanceTimeStep();
       redrawUniverse();
    };
