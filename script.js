@@ -398,8 +398,23 @@
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = 'none';
          resizeUniverse(105, 105);
-         cellValueColors = ['#0000ff', '#0033cc', '#006699', '#009966', '#00cc33', '#00ff00', '#33cc00', '#669900', '#996600', '#cc3300',
-                            '#ff0000', '#cc0033', '#990066', '#660099', '#3300cc'];
+         cellValueColors = [
+            'rgb(0, 0, 225)',
+            'rgb(0, 45, 180)',
+            'rgb(0, 90, 135)',
+            'rgb(0, 135, 90)',
+            'rgb(0, 180, 45)',
+            'rgb(0, 225, 0)',
+            'rgb(45, 180, 0)',
+            'rgb(90, 135, 0)',
+            'rgb(135, 90, 0)',
+            'rgb(180, 45, 0)',
+            'rgb(225, 0, 0)',
+            'rgb(180, 0, 45)',
+            'rgb(135, 0, 90)',
+            'rgb(90, 0, 135)',
+            'rgb(45, 0, 180)'
+         ];
          numCellValues = cellValueColors.length;
          randomizeUniverse();
          redrawUniverse();
@@ -416,7 +431,14 @@
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = 'none';
          resizeUniverse(168, 168);
-         cellValueColors = ['#0077ee', '#00ee77', '#77ee00', '#ee7700', '#ee0077', '#7700ee'];
+         cellValueColors = [
+            'rgb(0, 120, 240)',
+            'rgb(0, 240, 120)',
+            'rgb(120, 240, 0)',
+            'rgb(240, 120, 0)',
+            'rgb(240, 0, 120)',
+            'rgb(120, 0, 240)'
+         ];
          numCellValues = cellValueColors.length;
          randomizeUniverse();
          redrawUniverse();
@@ -433,7 +455,18 @@
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = 'none';
          resizeUniverse(40, 40);
-         cellValueColors = ['#0000ff', '#0055aa', '#00aa55', '#00ff00', '#55aa00', '#555555', '#aa5500', '#ff0000', '#aa0055', '#5500aa'];
+         cellValueColors = [
+            'rgb(0, 0, 225)',
+            'rgb(0, 75, 150)',
+            'rgb(0, 150, 75)',
+            'rgb(0, 225, 0)',
+            'rgb(75, 150, 0)',
+            'rgb(75, 75, 75)',
+            'rgb(150, 75, 0)',
+            'rgb(225, 0, 0)',
+            'rgb(150, 0, 75)',
+            'rgb(75, 0, 150)'
+         ];
          numCellValues = cellValueColors.length;
          randomizeUniverse();
          redrawUniverse();
@@ -451,7 +484,14 @@
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = 'none';
          resizeUniverse(120, 120);
-         cellValueColors = ['#000000', '#112233', '#224466', '#336699', '#4488cc', '#55aaff'];
+         cellValueColors = [
+            'rgb(0, 0, 0)',
+            'rgb(15, 30, 45)',
+            'rgb(30, 60, 90)',
+            'rgb(45, 90, 135)',
+            'rgb(60, 120, 180)',
+            'rgb(75, 150, 225)'
+         ];
          numCellValues = cellValueColors.length;
          for (cellX = 0; cellX < numCellsWide; cellX += 1) {
             for (cellY = 0; cellY < numCellsTall; cellY += 1) {
@@ -472,7 +512,16 @@
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = 'none';
          resizeUniverse(210, 210);
-         cellValueColors = ['#000000', '#0000ff', '#00ff00', '#00ffff', '#ff0000', '#ff00ff', '#ffff00', '#ffffff'];
+         cellValueColors = [
+            'rgb(0, 0, 0)',
+            'rgb(0, 0, 255)',
+            'rgb(0, 255, 0)',
+            'rgb(0, 255, 255)',
+            'rgb(255, 0, 0)',
+            'rgb(255, 0, 255)',
+            'rgb(255, 255, 0)',
+            'rgb(255, 255, 255)'
+         ];
          numCellValues = cellValueColors.length;
          randomizeUniverse();
          redrawUniverse();
