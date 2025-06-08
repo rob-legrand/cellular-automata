@@ -5,14 +5,17 @@
    var advanceTimeStep, advanceTimeStepCyclic, advanceTimeStepDirectional, advanceTimeStepDrift, advanceTimeStepModulo, advanceTimeStepParallel, advanceTimeStepTotalistic, advanceTimeStepVineyard, advanceTimeStepWolframRule, bornCheckbox, cellHeight, cellValueColors, cellValues, cellWidth, cyclicRadio, directionalRadio, driftRadio, moduloRadio, neighborDownCheckbox, neighborLeftCheckbox, neighborLeftDownCheckbox, neighborLeftUpCheckbox, neighborRightCheckbox, neighborRightDownCheckbox, neighborRightUpCheckbox, neighborUpCheckbox, neighborhoodArea, numCellValues, numCellsTall, numCellsWide, onCheckbox, parallelRadio, randomizeUniverse, redrawUniverse, resizeUniverse, surviveCheckbox, totalisticRadio, totalisticRulesArea, universeCanvas, universeContext, vineyardRadio, wolframRuleRadio, wolframRuleRulesArea;
 
    universeCanvas = document.querySelector('#universe');
-   universeContext = universeCanvas && universeCanvas.getContext && universeCanvas.getContext('2d');
-   if (!universeContext) {
-      document.querySelector('#instructions').innerHTML = 'Your browser does not seem to support the <code>&lt;canvas&gt;</code> element correctly.&nbsp; Please use a recent version of a standards-compliant browser such as <a href="http://www.opera.com/">Opera</a>, <a href="http://www.google.com/chrome/">Chrome</a> or <a href="http://www.getfirefox.com/">Firefox</a>.';
-      window.alert('Your browser does not seem to support the <canvas> element correctly.\nPlease use a recent version of a standards-compliant browser such as Opera, Chrome or Firefox.');
-      return;
-   }
-   universeCanvas.width = window.innerHeight > 945 ? 840 : 420;
-   universeCanvas.height = window.innerHeight > 945 ? 840 : 420;
+   universeContext = universeCanvas.getContext('2d');
+   universeCanvas.width = (
+      window.innerHeight > 945
+      ? 840
+      : 420
+   );
+   universeCanvas.height = (
+      window.innerHeight > 945
+      ? 840
+      : 420
+   );
    const darkColor = 'rgb(0, 15, 30)';
    const lightColor = 'rgb(225, 240, 255)';
 
