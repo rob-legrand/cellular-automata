@@ -13,6 +13,8 @@
    }
    universeCanvas.width = window.innerHeight > 945 ? 840 : 420;
    universeCanvas.height = window.innerHeight > 945 ? 840 : 420;
+   const darkColor = 'rgb(0, 15, 30)';
+   const lightColor = 'rgb(225, 240, 255)';
 
    cyclicRadio = document.querySelector('#cyclic-mode');
    directionalRadio = document.querySelector('#directional-mode');
@@ -74,7 +76,7 @@
       var cellX, cellY;
 
       // fill canvas background to match page background
-      universeContext.fillStyle = '#ddeeff';
+      universeContext.fillStyle = lightColor;
       universeContext.fillRect(0, 0, universeCanvas.width, universeCanvas.height);
 
       // draw cells
@@ -487,7 +489,7 @@
          totalisticRulesArea.style.display = '';
          wolframRuleRulesArea.style.display = 'none';
          resizeUniverse(105, 105);
-         cellValueColors = ['#ddeeff', '#001122'];
+         cellValueColors = [lightColor, darkColor];
          numCellValues = cellValueColors.length;
          randomizeUniverse();
          redrawUniverse();
@@ -531,7 +533,7 @@
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = '';
          resizeUniverse(120, 120);
-         cellValueColors = ['#ddeeff', '#001122'];
+         cellValueColors = [lightColor, darkColor];
          numCellValues = cellValueColors.length;
          randomizeUniverse();
          for (cellX = 0; cellX < numCellsWide; cellX += 1) {
