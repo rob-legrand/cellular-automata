@@ -2,7 +2,7 @@
 
 (function () {
    'use strict';
-   var advanceTimeStep, advanceTimeStepCyclic, advanceTimeStepDirectional, advanceTimeStepDrift, advanceTimeStepModulo, advanceTimeStepParallel, advanceTimeStepTotalistic, advanceTimeStepVineyard, advanceTimeStepWolframRule, bornCheckbox, cellHeight, cellValueColors, cellValues, cellWidth, cyclicRadio, directionalRadio, driftRadio, moduloRadio, neighborDownCheckbox, neighborLeftCheckbox, neighborLeftDownCheckbox, neighborLeftUpCheckbox, neighborRightCheckbox, neighborRightDownCheckbox, neighborRightUpCheckbox, neighborUpCheckbox, neighborhoodArea, numCellValues, numCellsTall, numCellsWide, onCheckbox, parallelRadio, randomizeUniverse, redrawUniverse, resizeUniverse, surviveCheckbox, totalisticRadio, totalisticRulesArea, universeCanvas, universeContext, vineyardRadio, wolframRuleRadio, wolframRuleRulesArea;
+   var advanceTimeStep, advanceTimeStepCyclic, advanceTimeStepDirectional, advanceTimeStepDrift, advanceTimeStepModulo, advanceTimeStepParallel, advanceTimeStepTotalistic, advanceTimeStepVineyard, advanceTimeStepWolframRule, cellHeight, cellValueColors, cellValues, cellWidth, cyclicRadio, directionalRadio, driftRadio, moduloRadio, neighborDownCheckbox, neighborLeftCheckbox, neighborLeftDownCheckbox, neighborLeftUpCheckbox, neighborRightCheckbox, neighborRightDownCheckbox, neighborRightUpCheckbox, neighborUpCheckbox, neighborhoodArea, numCellValues, numCellsTall, numCellsWide, parallelRadio, randomizeUniverse, redrawUniverse, resizeUniverse, totalisticRadio, totalisticRulesArea, universeCanvas, universeContext, vineyardRadio, wolframRuleRadio, wolframRuleRulesArea;
 
    universeCanvas = document.querySelector('#universe');
    universeContext = universeCanvas.getContext('2d');
@@ -38,14 +38,18 @@
    neighborRightCheckbox = document.querySelector('#neighbor-right');
    neighborRightDownCheckbox = document.querySelector('#neighbor-right-down');
    neighborDownCheckbox = document.querySelector('#neighbor-down');
-   surviveCheckbox = [document.querySelector('#survive-0'), document.querySelector('#survive-1'), document.querySelector('#survive-2'),
-                      document.querySelector('#survive-3'), document.querySelector('#survive-4'), document.querySelector('#survive-5'),
-                      document.querySelector('#survive-6'), document.querySelector('#survive-7'), document.querySelector('#survive-8')];
-   bornCheckbox = [document.querySelector('#born-0'), document.querySelector('#born-1'), document.querySelector('#born-2'),
-                   document.querySelector('#born-3'), document.querySelector('#born-4'), document.querySelector('#born-5'),
-                   document.querySelector('#born-6'), document.querySelector('#born-7'), document.querySelector('#born-8')];
-   onCheckbox = [document.querySelector('#on-0'), document.querySelector('#on-1'), document.querySelector('#on-2'), document.querySelector('#on-3'),
-                 document.querySelector('#on-4'), document.querySelector('#on-5'), document.querySelector('#on-6'), document.querySelector('#on-7')];
+   const surviveCheckboxes = Array.from(
+      {length: 9},
+      (ignore, index) => document.querySelector('#survive-' + index)
+   );
+   const bornCheckboxes = Array.from(
+      {length: 9},
+      (ignore, index) => document.querySelector('#born-' + index)
+   );
+   const onCheckboxes = Array.from(
+      {length: 8},
+      (ignore, index) => document.querySelector('#on-' + index)
+   );
    advanceTimeStep = null;
 
    resizeUniverse = function (newNumCellsWide, newNumCellsTall) {
@@ -282,7 +286,7 @@
             cellYUp = (cellY + numCellsTall - 1) % numCellsTall;
             cellYDown = (cellY + 1) % numCellsTall;
             total = cellValues[cellXLeft][cellYUp] + cellValues[cellXLeft][cellY] + cellValues[cellXLeft][cellYDown] + cellValues[cellX][cellYUp] + cellValues[cellX][cellY] + cellValues[cellX][cellYDown] + cellValues[cellXRight][cellYUp] + cellValues[cellXRight][cellY] + cellValues[cellXRight][cellYDown];
-            newCellValues[cellX][cellY] = cellValues[cellX][cellY] === 1 ? surviveCheckbox[total - 1].checked ? 1 : 0 : bornCheckbox[total].checked ? 1 : 0;
+            newCellValues[cellX][cellY] = cellValues[cellX][cellY] === 1 ? surviveCheckboxes[total - 1].checked ? 1 : 0 : bornCheckboxes[total].checked ? 1 : 0;
          }
       }
 
@@ -388,7 +392,7 @@
             if (cellY < numCellsTall - 1) {
                cellValues[cellX][cellY] = cellValues[cellX][cellYDown];
             } else {
-               cellValues[cellX][cellY] = onCheckbox[4 * cellValues[cellXLeft][cellYUp] + 2 * cellValues[cellX][cellYUp] + cellValues[cellXRight][cellYUp]].checked ? 1 : 0;
+               cellValues[cellX][cellY] = onCheckboxes[4 * cellValues[cellXLeft][cellYUp] + 2 * cellValues[cellX][cellYUp] + cellValues[cellXRight][cellYUp]].checked ? 1 : 0;
             }
          }
       }
@@ -647,19 +651,19 @@
    document.querySelector('#gameoflife-rules').onclick = function () {
       var whichNumNeighbors;
       for (whichNumNeighbors = 0; whichNumNeighbors <= 8; whichNumNeighbors += 1) {
-         surviveCheckbox[whichNumNeighbors].checked = false;
-         bornCheckbox[whichNumNeighbors].checked = false;
+         surviveCheckboxes[whichNumNeighbors].checked = false;
+         bornCheckboxes[whichNumNeighbors].checked = false;
       }
-      surviveCheckbox[2].checked = true;
-      surviveCheckbox[3].checked = true;
-      bornCheckbox[3].checked = true;
+      surviveCheckboxes[2].checked = true;
+      surviveCheckboxes[3].checked = true;
+      bornCheckboxes[3].checked = true;
    };
 
    document.querySelector('#majorityvote-rules').onclick = function () {
       var whichNumNeighbors;
       for (whichNumNeighbors = 0; whichNumNeighbors <= 8; whichNumNeighbors += 1) {
-         surviveCheckbox[whichNumNeighbors].checked = whichNumNeighbors >= 4;
-         bornCheckbox[whichNumNeighbors].checked = whichNumNeighbors > 4;
+         surviveCheckboxes[whichNumNeighbors].checked = whichNumNeighbors >= 4;
+         bornCheckboxes[whichNumNeighbors].checked = whichNumNeighbors > 4;
       }
    };
 
