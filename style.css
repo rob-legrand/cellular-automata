@@ -72,6 +72,12 @@ label {
    justify-content: flex-start;
 }
 
+.neighborhood-checkboxes {
+   display: grid;
+   gap: 5px;
+   grid-template-columns: repeat(3, max-content);
+}
+
 ::selection {
    background-color: light-dark(
       rgb(255, 225, 195),

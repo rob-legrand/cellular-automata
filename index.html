@@ -34,26 +34,16 @@
    </fieldset>
    <fieldset id="neighborhood-area">
       <legend>Custom neighborhood</legend>
-      <div>
-         <table><tr><td>
-            <input id="neighbor-left-up" type="checkbox" />
-         </td><td>
-            <input checked="checked" id="neighbor-up" type="checkbox" />
-         </td><td>
-            <input id="neighbor-right-up" type="checkbox" />
-         </td></tr><tr><td>
-            <input checked="checked" id="neighbor-left" type="checkbox" />
-         </td><td>
-            &nbsp;
-         </td><td>
-            <input checked="checked" id="neighbor-right" type="checkbox" />
-         </td></tr><tr><td>
-            <input id="neighbor-left-down" type="checkbox" />
-         </td><td>
-            <input checked="checked" id="neighbor-down" type="checkbox" />
-         </td><td>
-            <input id="neighbor-right-down" type="checkbox" />
-         </td></tr></table>
+      <div class="neighborhood-checkboxes">
+         <input id="neighbor-left-up" type="checkbox" />
+         <input checked="checked" id="neighbor-up" type="checkbox" />
+         <input id="neighbor-right-up" type="checkbox" />
+         <input checked="checked" id="neighbor-left" type="checkbox" />
+         <div id="neighbor-self"></div>
+         <input checked="checked" id="neighbor-right" type="checkbox" />
+         <input id="neighbor-left-down" type="checkbox" />
+         <input checked="checked" id="neighbor-down" type="checkbox" />
+         <input id="neighbor-right-down" type="checkbox" />
       </div>
       <div>
          <button id="moore-neighborhood" type="button">Moore</button>
