@@ -73,9 +73,11 @@ label {
 }
 
 .neighborhood {
+   align-items: center;
    display: grid;
    gap: 5px;
    grid-template-columns: repeat(3, max-content);
+   justify-items: center;
 }
 
 ::selection {
