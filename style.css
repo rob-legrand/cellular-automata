@@ -80,6 +80,15 @@ label {
    justify-items: center;
 }
 
+.totalistic-rules {
+   align-items: center;
+   display: grid;
+   gap: 5px;
+   grid-auto-flow: column;
+   grid-template-rows: repeat(10, max-content);
+   justify-items: center;
+}
+
 ::selection {
    background-color: light-dark(
       rgb(255, 225, 195),
