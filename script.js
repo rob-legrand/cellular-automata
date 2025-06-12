@@ -2,6 +2,8 @@
 
 (function () {
    'use strict';
+   let offColor;
+   let onColor;
    var advanceTimeStep, advanceTimeStepCyclic, advanceTimeStepDirectional, advanceTimeStepDrift, advanceTimeStepModulo, advanceTimeStepParallel, advanceTimeStepTotalistic, advanceTimeStepVineyard, advanceTimeStepWolframRule, cellHeight, cellValueColors, cellValues, cellWidth, cyclicRadio, directionalRadio, driftRadio, moduloRadio, neighborDownCheckbox, neighborLeftCheckbox, neighborLeftDownCheckbox, neighborLeftUpCheckbox, neighborRightCheckbox, neighborRightDownCheckbox, neighborRightUpCheckbox, neighborUpCheckbox, neighborhoodArea, numCellValues, numCellsTall, numCellsWide, parallelRadio, randomizeUniverse, redrawUniverse, resizeUniverse, totalisticRadio, totalisticRulesArea, universeCanvas, universeContext, vineyardRadio, wolframRuleRadio, wolframRuleRulesArea;
 
    universeCanvas = document.querySelector('#universe');
@@ -51,6 +53,21 @@
       (ignore, index) => document.querySelector('#on-' + index)
    );
    advanceTimeStep = null;
+
+   const fixOffAndOnColors = function () {
+      offColor = (
+         matchMedia('(prefers-color-scheme: dark)').matches
+         ? darkColor
+         : lightColor
+      );
+      onColor = (
+         matchMedia('(prefers-color-scheme: dark)').matches
+         ? lightColor
+         : darkColor
+      );
+   };
+   fixOffAndOnColors();
+   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', fixOffAndOnColors);
 
    resizeUniverse = function (newNumCellsWide, newNumCellsTall) {
       var cellX, cellY;
@@ -545,7 +562,7 @@
          totalisticRulesArea.style.display = '';
          wolframRuleRulesArea.style.display = 'none';
          resizeUniverse(105, 105);
-         cellValueColors = [lightColor, darkColor];
+         cellValueColors = [offColor, onColor];
          numCellValues = cellValueColors.length;
          randomizeUniverse();
          redrawUniverse();
@@ -589,7 +606,7 @@
          totalisticRulesArea.style.display = 'none';
          wolframRuleRulesArea.style.display = '';
          resizeUniverse(120, 120);
-         cellValueColors = [lightColor, darkColor];
+         cellValueColors = [offColor, onColor];
          numCellValues = cellValueColors.length;
          randomizeUniverse();
          for (cellX = 0; cellX < numCellsWide; cellX += 1) {
