@@ -4,7 +4,7 @@
    'use strict';
    let offColor;
    let onColor;
-   var advanceTimeStep, advanceTimeStepCyclic, advanceTimeStepDirectional, advanceTimeStepDrift, advanceTimeStepModulo, advanceTimeStepParallel, advanceTimeStepTotalistic, advanceTimeStepVineyard, advanceTimeStepWolframRule, cellHeight, cellValueColors, cellValues, cellWidth, cyclicRadio, directionalRadio, driftRadio, moduloRadio, neighborDownCheckbox, neighborLeftCheckbox, neighborLeftDownCheckbox, neighborLeftUpCheckbox, neighborRightCheckbox, neighborRightDownCheckbox, neighborRightUpCheckbox, neighborUpCheckbox, neighborhoodArea, numCellValues, numCellsTall, numCellsWide, parallelRadio, randomizeUniverse, redrawUniverse, resizeUniverse, totalisticRadio, totalisticRulesArea, vineyardRadio, wolframRuleRadio, wolframRuleRulesArea;
+   var advanceTimeStep, advanceTimeStepCyclic, advanceTimeStepDirectional, advanceTimeStepDrift, advanceTimeStepModulo, advanceTimeStepParallel, advanceTimeStepTotalistic, advanceTimeStepVineyard, advanceTimeStepWolframRule, cellHeight, cellValueColors, cellValues, cellWidth, numCellValues, numCellsTall, numCellsWide, randomizeUniverse, redrawUniverse, resizeUniverse;
 
    const universeCanvas = document.querySelector('#universe');
    const universeContext = universeCanvas.getContext('2d');
@@ -21,25 +21,25 @@
    const darkColor = 'rgb(0, 15, 30)';
    const lightColor = 'rgb(225, 240, 255)';
 
-   cyclicRadio = document.querySelector('#cyclic-mode');
-   directionalRadio = document.querySelector('#directional-mode');
-   driftRadio = document.querySelector('#drift-mode');
-   moduloRadio = document.querySelector('#modulo-mode');
-   parallelRadio = document.querySelector('#parallel-mode');
-   totalisticRadio = document.querySelector('#totalistic-mode');
-   vineyardRadio = document.querySelector('#vineyard-mode');
-   wolframRuleRadio = document.querySelector('#wolfram-rule-mode');
-   neighborhoodArea = document.querySelector('#neighborhood-area');
-   totalisticRulesArea = document.querySelector('#totalistic-rules-area');
-   wolframRuleRulesArea = document.querySelector('#wolfram-rule-rules-area');
-   neighborLeftDownCheckbox = document.querySelector('#neighbor-left-down');
-   neighborLeftCheckbox = document.querySelector('#neighbor-left');
-   neighborLeftUpCheckbox = document.querySelector('#neighbor-left-up');
-   neighborUpCheckbox = document.querySelector('#neighbor-up');
-   neighborRightUpCheckbox = document.querySelector('#neighbor-right-up');
-   neighborRightCheckbox = document.querySelector('#neighbor-right');
-   neighborRightDownCheckbox = document.querySelector('#neighbor-right-down');
-   neighborDownCheckbox = document.querySelector('#neighbor-down');
+   const cyclicRadio = document.querySelector('#cyclic-mode');
+   const directionalRadio = document.querySelector('#directional-mode');
+   const driftRadio = document.querySelector('#drift-mode');
+   const moduloRadio = document.querySelector('#modulo-mode');
+   const parallelRadio = document.querySelector('#parallel-mode');
+   const totalisticRadio = document.querySelector('#totalistic-mode');
+   const vineyardRadio = document.querySelector('#vineyard-mode');
+   const wolframRuleRadio = document.querySelector('#wolfram-rule-mode');
+   const neighborhoodArea = document.querySelector('#neighborhood-area');
+   const totalisticRulesArea = document.querySelector('#totalistic-rules-area');
+   const wolframRuleRulesArea = document.querySelector('#wolfram-rule-rules-area');
+   const neighborLeftDownCheckbox = document.querySelector('#neighbor-left-down');
+   const neighborLeftCheckbox = document.querySelector('#neighbor-left');
+   const neighborLeftUpCheckbox = document.querySelector('#neighbor-left-up');
+   const neighborUpCheckbox = document.querySelector('#neighbor-up');
+   const neighborRightUpCheckbox = document.querySelector('#neighbor-right-up');
+   const neighborRightCheckbox = document.querySelector('#neighbor-right');
+   const neighborRightDownCheckbox = document.querySelector('#neighbor-right-down');
+   const neighborDownCheckbox = document.querySelector('#neighbor-down');
    const surviveCheckboxes = Array.from(
       {length: 9},
       (ignore, index) => document.querySelector('#survive-' + index)
